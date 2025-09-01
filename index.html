@@ -14,12 +14,19 @@
   <!-- YouTube preconnect -->
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://i.ytimg.com">
-  <!-- Google Fonts (Luxury Latin feel) -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Luxurious+Roman&display=swap" rel="stylesheet">
 
+  <!-- Preload & declare custom font -->
+  <link rel="preload" as="font" href="font/SouthernAire_Personal_Use_Only.ttf" type="font/ttf" crossorigin>
   <style>
+    /* ===== Custom font ===== */
+    @font-face{
+      font-family: 'SouthernAire';
+      src: url('font/SouthernAire_Personal_Use_Only.ttf') format('truetype');
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+
     :root{
       --bg:#f7efe5;
       --ink:#2b2b2b;
@@ -27,9 +34,10 @@
       --accent-2:#e0b973;
       --card:#ffffffcc;
       --shadow: 0 10px 25px rgba(0,0,0,.08);
-      /* Font mewah untuk judul cover */
-      --lux-font: 'Luxurious Roman', ui-serif, Georgia, 'Times New Roman', serif;
+      /* Pakai font custom untuk judul cover */
+      --lux-font: 'SouthernAire', ui-serif, Georgia, 'Times New Roman', serif;
     }
+
     *{box-sizing:border-box}
     html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";}
     a{color:var(--accent);text-decoration:none}
@@ -40,12 +48,12 @@
     .cover-inner{max-width:680px;text-align:center;padding:24px}
     .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff33;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1a;backdrop-filter: blur(6px)}
     .title{
-      font-family: var(--lux-font);   /* <- ganti font judul cover di sini */
+      font-family: var(--lux-font);   /* <- font custom di sini */
       font-size:clamp(28px,6vw,56px);
       line-height:1.05;
       margin:16px 0 8px;
-      font-weight:400;               /* Luxurious Roman hanya regular */
-      letter-spacing:.5px;
+      font-weight:400;
+      letter-spacing:.3px;
     }
     .subtitle{opacity:.9;font-size:clamp(14px,2.5vw,18px)}
     .open-btn{margin-top:22px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:16px;cursor:pointer;box-shadow:var(--shadow);transition:.25s transform}
