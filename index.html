@@ -262,11 +262,12 @@
     // Inject dynamic text
     const hero = document.querySelector('header.hero .card');
     hero.innerHTML = hero.innerHTML
-      .replace('{{BRIDE}}', CONFIG.bride)
-      .replace('{{GROOM}}', CONFIG.groom)
-      .replace('{{PARENTS}}', CONFIG.parents)
-      .replaceAll('{{DATETEXT}}', CONFIG.dateText)
-      .replace('{{PLACE}}', CONFIG.place);
+    .replaceAll('{{BRIDE}}', CONFIG.bride)
+    .replaceAll('{{GROOM}}', CONFIG.groom)
+    .replaceAll('{{PARENTS}}', CONFIG.parents)
+    .replaceAll('{{DATETEXT}}', CONFIG.dateText)
+    .replaceAll('{{PLACE}}', CONFIG.place);
+
 
     byId('dateText').textContent = CONFIG.dateText;
     const mapUrl = CONFIG.maps;
@@ -442,6 +443,7 @@
   </script>
 </body>
 </html>
+
 
 
 
