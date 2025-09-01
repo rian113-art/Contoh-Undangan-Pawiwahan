@@ -10,6 +10,9 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="" />
   <meta name="theme-color" content="#f7efe5" />
+  <!-- Percepat pemuatan YouTube -->
+  <link rel="preconnect" href="https://www.youtube.com">
+  <link rel="preconnect" href="https://i.ytimg.com">
   <style>
     :root{
       --bg:#f7efe5;
@@ -24,6 +27,8 @@
     html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";}
     a{color:var(--accent);text-decoration:none}
     img{max-width:100%;display:block}
+
+    /* Hero / Cover */
     .cover{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.55)), url('cover.jpg') center/cover no-repeat;z-index:50;color:#fff}
     .cover-inner{max-width:680px;text-align:center;padding:24px}
     .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff33;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1a;backdrop-filter: blur(6px)}
@@ -31,44 +36,65 @@
     .subtitle{opacity:.9;font-size:clamp(14px,2.5vw,18px)}
     .open-btn{margin-top:22px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:16px;cursor:pointer;box-shadow:var(--shadow);transition:.25s transform}
     .open-btn:hover{transform:translateY(-2px)}
-    .petal{position:fixed;pointer-events:none;top:-60px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15));opacity:.85}
-    @keyframes fall{to{transform:translateY(120vh) rotate(360deg);opacity:.95}}
+
+    /* Layout */
     .wrap{max-width:1080px;margin:0 auto;padding:24px}
     .card{background:var(--card);backdrop-filter: blur(8px);border:1px solid #00000010;border-radius:20px;box-shadow:var(--shadow);padding:22px}
     .grid{display:grid;gap:18px}
     @media(min-width:900px){.grid-2{grid-template-columns:1.2fr .8fr}}
+
     header.hero{padding-top:72px}
     .names{font-size:clamp(26px,5.6vw,48px);font-weight:800;text-align:center}
     .date{color:#444;text-align:center;margin-top:6px}
+
+    /* Countdown */
     .countdown{display:grid;grid-auto-flow:column;gap:10px;justify-content:center;margin:18px 0}
     .cell{background:#fff;border-radius:14px;padding:10px 14px;border:1px solid #00000014;min-width:68px;text-align:center}
     .cell .num{font-size:28px;font-weight:800}
     .cell .lbl{font-size:12px;color:#666}
+
+    /* Sections */
     section{margin:26px 0}
     h2{font-size:clamp(20px,4vw,28px);margin:6px 0 12px}
+
+    /* Info list */
     .info{display:grid;gap:10px}
     .info .row{display:flex;gap:12px;align-items:flex-start}
     .icon{width:24px;height:24px;flex:0 0 24px;opacity:.9}
+
+    /* Map */
     .map{border-radius:16px;overflow:hidden;border:1px solid #00000018}
     .map iframe{width:100%;height:280px;border:0}
+
+    /* Gallery */
     .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     @media(min-width:720px){.gallery{grid-template-columns:repeat(4,1fr)}}
     .gallery img{border-radius:14px;aspect-ratio:1/1;object-fit:cover;border:1px solid #00000018}
+
+    /* Lightbox */
     .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:60}
     .lightbox.open{display:flex}
     .lightbox img{max-width:92vw;max-height:84vh;border-radius:12px}
     .lb-nav{position:fixed;inset:0;display:flex;align-items:center;justify-content:space-between;padding:24px;color:#fff}
     .lb-btn{background:#ffffff1a;border:1px solid #ffffff33;border-radius:12px;padding:10px 14px;cursor:pointer}
+
+    /* Forms */
     form .field{display:grid;gap:6px;margin:10px 0}
     input, select, textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #00000022;background:#fff;font-size:14px}
     button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;padding:12px 16px;border-radius:14px;font-weight:700;cursor:pointer}
     .notes{font-size:12px;color:#666}
+
     .guestbook .item{background:#fff;border:1px solid #00000014;border-radius:14px;padding:12px;display:grid;gap:4px}
     .guestbook .meta{font-size:12px;color:#666}
+
+    /* Floating FABs */
     .fab-col{position:fixed;right:16px;bottom:16px;display:grid;gap:10px;z-index:40}
     .fab{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:999px;background:#fff;border:1px solid #00000022;box-shadow:var(--shadow);cursor:pointer}
+
+    /* Reveal on scroll */
     .reveal{opacity:0;transform:translateY(16px);transition: .6s ease}
     .reveal.show{opacity:1;transform:none}
+
     footer{padding:30px 0 60px;text-align:center;color:#666}
     .badge{display:inline-block;background:#fff;border:1px solid #00000014;border-radius:10px;padding:6px 10px;font-size:12px}
   </style>
@@ -89,13 +115,8 @@
     coverImage: "cover.jpg",
     gallery: ["galeri-1.jpg","galeri-2.jpg","galeri-3.jpg","galeri-4.jpg","galeri-5.jpg","galeri-6.jpg"],
 
-    /* === Musik YouTube (opsional) ===
-       - Isi dengan ID atau URL YouTube, contoh:
-         youtube: "dQw4w9WgXcQ"
-         atau
-         youtube: "https://youtu.be/dQw4w9WgXcQ"
-       - Jika dibiarkan "", akan pakai musik.mp3 sebagai fallback. */
-    youtube: "https://youtu.be/L2I7hZqC7lY?si=1ep6AXyKCrskDs8E"
+    /* Musik YouTube (pakai ID/URL). Kosongkan "" bila ingin pakai musik.mp3 */
+    youtube: "https://youtu.be/L2I7hZqC7lY?si=yAiNTx3aji-g6nfD"
   };
   document.title = CONFIG.title;
 </script>
@@ -109,8 +130,6 @@
       <button class="open-btn" id="openInvite">Buka Undangan</button>
     </div>
   </div>
-
-  <!-- Floating petals (dynamically inserted) -->
 
   <main class="wrap" id="app" style="display:none">
     <header class="hero reveal">
@@ -230,8 +249,7 @@
     <source src="musik.mp3" type="audio/mpeg" />
   </audio>
 
-  <!-- (YouTube) Player API + Container tersembunyi -->
-  <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- Kontainer YouTube tersembunyi -->
   <div id="ytWrap" aria-hidden="true" style="position:fixed;left:-9999px;top:auto;width:1px;height:1px;opacity:0;pointer-events:none">
     <div id="ytPlayer"></div>
   </div>
@@ -288,7 +306,7 @@
     const fabs = byId('fabs');
     const openBtn = byId('openInvite');
 
-    // ===== YouTube BGM Support (optional via CONFIG.youtube) =====
+    // ===== YouTube BGM Support (stabil dengan pendingPlay) =====
     function getYTId(input){
       if(!input) return "";
       const s = String(input).trim();
@@ -298,20 +316,37 @@
     }
     const YT_ID = getYTId(CONFIG.youtube);
     const USE_YT = !!YT_ID;
+
     let ytPlayer = null;
+    let pendingPlay = false; // antrian play kalau player belum siap
 
     window.onYouTubeIframeAPIReady = function(){
       if(!USE_YT) return;
       ytPlayer = new YT.Player('ytPlayer', {
         videoId: YT_ID,
         playerVars: {
-          autoplay: 0, loop: 1, playlist: YT_ID,
-          controls: 0, modestbranding: 1, rel: 0, fs: 0
+          autoplay: 0,
+          loop: 1,
+          playlist: YT_ID,   // wajib untuk loop
+          controls: 0,
+          modestbranding: 1,
+          rel: 0,
+          fs: 0,
+          playsinline: 1     // iOS biar inline
+        },
+        events: {
+          onReady: () => {
+            if (pendingPlay) {
+              try { ytPlayer.playVideo(); } catch {}
+              pendingPlay = false;
+              syncMusicBtn();
+            }
+          }
         }
       });
     };
 
-    // ===== Music controls (support YT or <audio>) =====
+    // ===== Music controls (support YT atau <audio>) =====
     const bgm = byId('bgm');
     const iconPlay  = byId('iconPlay');
     const iconPause = byId('iconPause');
@@ -333,10 +368,14 @@
       app.style.display='block';
       fabs.style.display='grid';
       startCountdown();
-      spawnPetals();
 
-      if (USE_YT && ytPlayer && ytPlayer.playVideo) {
-        try { ytPlayer.playVideo(); } catch {}
+      if (USE_YT) {
+        if (ytPlayer && ytPlayer.playVideo) {
+          try { ytPlayer.playVideo(); } catch {}
+        } else {
+          pendingPlay = true; // nanti jalan saat onReady
+        }
+        try { bgm.pause(); } catch {}
       } else {
         try { bgm.play().then(()=>syncMusicBtn()); } catch {}
       }
@@ -344,38 +383,20 @@
     });
 
     byId('btnMusic').addEventListener('click', ()=>{
-      if (USE_YT && ytPlayer && ytPlayer.getPlayerState) {
-        const st = ytPlayer.getPlayerState();
-        if (st === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
-        else ytPlayer.playVideo();
+      if (USE_YT) {
+        if (ytPlayer && ytPlayer.getPlayerState) {
+          const st = ytPlayer.getPlayerState();
+          if (st === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+          else ytPlayer.playVideo();
+        } else {
+          pendingPlay = true;
+        }
       } else {
         if (bgm.paused) bgm.play(); else bgm.pause();
       }
       syncMusicBtn();
     });
     bgm.addEventListener('ended', syncMusicBtn);
-
-    // ===== Falling petals =====
-    function spawnPetals(){
-      for(let i=0;i<16;i++){
-        const p=document.createElement('img');
-        p.src = toDataURIFlower();
-        p.className='petal';
-        const d = 8 + Math.random()*14;
-        p.style.left = (Math.random()*100)+'vw';
-        p.style.animation = `fall ${d}s linear ${Math.random()*-d}s infinite`;
-        p.style.width = (26+Math.random()*16)+'px';
-        document.body.appendChild(p);
-      }
-    }
-    function toDataURIFlower(){
-      const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'>
-        <defs><radialGradient id='g' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#fff8e1'/><stop offset='100%' stop-color='#ffd27a'/></radialGradient></defs>
-        <g fill='url(#g)' stroke='#e9b35f' stroke-width='1'>
-          <path d='M32 6c5 9 9 15 20 18-8 2-11 4-14 12-3-8-6-10-14-12 11-3 15-9 20-18Z'/>
-        </g></svg>`;
-      return 'data:image/svg+xml;utf8,'+encodeURIComponent(svg);
-    }
 
     // ===== Countdown =====
     let timerId=null;
@@ -497,12 +518,9 @@ END:VCALENDAR`;
       return s.replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
     }
 
-    // ===== Reveal on scroll =====
-    const io = new IntersectionObserver((entries)=>{
-      entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); io.unobserve(e.target);} });
-    }, {threshold:.12});
-    $$('.reveal').forEach(el=>io.observe(el));
-
   </script>
+
+  <!-- Load YouTube Iframe API (setelah handler di atas terdefinisi) -->
+  <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
