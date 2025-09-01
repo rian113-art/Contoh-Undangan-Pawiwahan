@@ -11,17 +11,21 @@
   <meta property="og:image" content="cover.jpg" />
   <meta name="theme-color" content="#f7efe5" />
 
-  <!-- YouTube preconnect -->
+  <!-- Preconnect -->
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://i.ytimg.com">
 
-  <!-- Preload & declare custom font -->
-  <link rel="preload" as="font" href="font/SouthernAire_Personal_Use_Only.ttf" type="font/ttf" crossorigin="anonymous">
+  <!-- Preload font (same-origin, no need crossorigin) -->
+  <link rel="preload" as="font" href="font/SouthernAire_Personal_Use_Only.ttf?v=2" type="font/ttf">
+
   <style>
     /* ===== Custom font ===== */
     @font-face{
       font-family: 'SouthernAire';
-      src: url('font/SouthernAire_Personal_Use_Only.ttf') format('truetype');
+      src:
+        local('SouthernAire'),
+        local('SouthernAire Personal Use Only'),
+        url('font/SouthernAire_Personal_Use_Only.ttf?v=2') format('truetype');
       font-weight: 400;
       font-style: normal;
       font-display: swap;
@@ -34,7 +38,6 @@
       --accent-2:#e0b973;
       --card:#ffffffcc;
       --shadow: 0 10px 25px rgba(0,0,0,.08);
-      /* Font script mewah */
       --lux-font: 'SouthernAire', ui-serif, Georgia, 'Times New Roman', serif;
     }
 
@@ -47,18 +50,17 @@
     .cover{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.55)), url('cover.jpg') center/cover no-repeat;z-index:50;color:#fff}
     .cover-inner{max-width:680px;text-align:center;padding:24px}
     .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff33;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1a;backdrop-filter: blur(6px)}
+    /* 1) Pawiwahan / Pernikahan — font custom + lebih besar + jarak rapat */
     .title{
-      /* 1) Pawiwahan / Pernikahan — font custom + lebih besar + jarak diperkecil */
       font-family: var(--lux-font);
-      font-size: clamp(48px, 11vw, 100px);
+      font-size: clamp(46px, 11vw, 96px);
       line-height: 1;
-      margin: 6px 0 2px;   /* lebih rapat */
+      margin: 6px 0 2px;
       font-weight: 400;
       letter-spacing: .2px;
-      font-synthesis: none;       /* cegah bold sintetis */
     }
     .subtitle{opacity:.9;font-size:clamp(14px,2.5vw,18px)}
-    .open-btn{margin-top:12px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:16px;cursor:pointer;box-shadow:var(--shadow);transition:.25s transform}
+    .open-btn{margin-top:14px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:16px;cursor:pointer;box-shadow:var(--shadow);transition:.25s transform}
     .open-btn:hover{transform:translateY(-2px)}
 
     /* Layout */
@@ -68,15 +70,14 @@
     @media(min-width:900px){.grid-2{grid-template-columns:1.2fr .8fr}}
 
     header.hero{padding-top:72px}
+    /* 2) Sampek & Duik — font custom */
     .names{
-      /* 2) Sampek & Duik — font custom */
       font-family: var(--lux-font);
-      font-size: clamp(36px, 9vw, 72px);
+      font-size: clamp(34px, 9vw, 68px);
       font-weight: 400;
       text-align:center;
       line-height: 1.02;
       letter-spacing: .2px;
-      font-synthesis: none;
     }
     .date{color:#444;text-align:center;margin-top:6px}
 
@@ -106,8 +107,7 @@
       font-weight: 400;
       font-size: clamp(26px, 7.5vw, 40px);
       line-height: 1;
-      margin: 4px 0 10px;
-      font-synthesis: none;
+      margin: 6px 0 12px;
     }
     /* Gallery grid */
     .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
@@ -155,13 +155,13 @@
     /* === Portraits (dua foto – stadium vertikal) === */
     .portraits .grid-portraits{
       display:grid;
-      gap:28px;                 /* jarak default (mobile) */
+      gap:28px;
       grid-template-columns:1fr;
     }
     @media(min-width:720px){
       .portraits .grid-portraits{
         grid-template-columns:1fr 1fr;
-        column-gap:40px;        /* jarak antar bingkai pria–wanita */
+        column-gap:40px;
         row-gap:28px;
       }
     }
@@ -169,21 +169,21 @@
     .portrait-frame{
       width:clamp(200px,48vw,320px);
       aspect-ratio:3/4;
-      padding:2px;                 /* tebal ring */
-      border:2px solid #d4af37;    /* warna ring */
-      border-radius:9999px;        /* stadium vertikal */
+      padding:2px;
+      border:2px solid #d4af37;
+      border-radius:9999px;
       overflow:hidden;
       background:#fff;
       box-shadow:var(--shadow);
     }
     .portrait-img{ width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block; background:#00000008; }
+
+    /* 3) Nama di bawah bingkai — font custom (pakai !important agar tak ketimpa) */
     .portrait-name{
-      /* 3) Nama di bawah bingkai — font custom (dipaksa agar tak ketimpa) */
       font-family: var(--lux-font) !important;
       font-weight: 400;
-      font-size: clamp(22px, 6.8vw, 34px);
+      font-size: clamp(22px, 7vw, 34px);
       line-height: 1.03;
-      font-synthesis: none;
     }
     .portrait-sub{ font-size:12px; color:#666; }
 
@@ -191,15 +191,13 @@
     .footer-title{
       font-family: var(--lux-font);
       font-weight: 400;
-      font-size: clamp(28px, 8vw, 48px);
+      font-size: clamp(28px, 8.5vw, 48px);
       line-height: 1.02;
-      font-synthesis: none;
     }
     .footer-sub{ font-size:14px; color:#666; }
   </style>
 </head>
 <body>
-<!-- CONFIG: ubah data di sini -->
 <script>
   const CONFIG = {
     title: "Contoh Undangan Pawiwahan",
@@ -213,18 +211,12 @@
     whatsapp: "6282192698260",
     coverImage: "cover.jpg",
     gallery: ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"],
-
-    /* Musik YouTube (pakai ID/URL). Kosongkan "" bila ingin pakai musik.mp3 */
     youtube: "https://youtu.be/L2I7hZqC7lY?si=yAiNTx3aji-g6nfD",
-
-    /* Sponsor */
     sponsorsHeading: "support by:",
     sponsors: [
       { logo: "sponsor1.png", name: "Super Grub", link: "" },
       { logo: "sponsor2.png", name: "Yaatra Studio", link: "" }
     ],
-
-    /* === Potret mempelai (2 foto) === */
     portraits: {
       bride: { src: "potret-wanita.jpg", name: "Duik",   sub: "Putri pertama dari Pasangan......" },
       groom: { src: "potret-pria.jpg",   name: "Sampek", sub: "Putra pertama dari Pasangan....." }
@@ -233,7 +225,7 @@
   document.title = CONFIG.title;
 </script>
 
-  <!-- COVER / OPENING -->
+  <!-- COVER -->
   <div class="cover" id="cover">
     <div class="cover-inner">
       <div class="chip">Om Swastyastu • Manusa Yadnya</div>
@@ -253,7 +245,7 @@
       </div>
     </header>
 
-    <!-- === POTRET MEMPELAI (dua foto, stadium) === -->
+    <!-- POTRET MEMPELAI -->
     <section class="card reveal portraits" id="portraits">
       <h2>Potret Mempelai</h2>
       <div class="grid-portraits">
@@ -303,13 +295,13 @@
       </div>
     </section>
 
-    <!-- GALERI (pakai id untuk styling khusus judul) -->
+    <!-- GALERI -->
     <section class="card reveal" id="sectionGallery">
       <h2>Galeri</h2>
       <div class="gallery" id="gallery"></div>
     </section>
 
-    <!-- MAP (di bawah galeri) -->
+    <!-- MAP -->
     <section class="card reveal map">
       <iframe id="mapFrame" loading="lazy" allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
       <div style="padding:10px 4px"><a id="mapLink" target="_blank" rel="noopener">Buka di Google Maps</a></div>
@@ -355,7 +347,6 @@
       <div class="footer-title">Matur Suksma</div>
       <div class="footer-sub">Atas doa dan kehadiran semeton sami.</div>
 
-      <!-- Sponsor -->
       <div class="sponsor" id="sponsorBlock">
         <div class="sponsor-heading" id="sponsorHeading"></div>
         <div class="sponsor-logos" id="sponsorLogos"></div>
@@ -465,7 +456,7 @@
       img.addEventListener('click',()=>openLightbox(i)); g.appendChild(img);
     });
 
-    // ===== Scroll reveal (IntersectionObserver) =====
+    // Scroll reveal
     function setupScrollReveal(){
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
@@ -475,7 +466,6 @@
           }
         });
       }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
-
       document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
     }
 
@@ -500,7 +490,7 @@
 
     document.getElementById('openInvite').addEventListener('click', ()=>{
       cover.style.display='none'; app.style.display='block'; fabs.style.display='grid';
-      setupScrollReveal();     // aktifkan efek pop-in saat scroll
+      setupScrollReveal();
       startCountdown();
       if (USE_YT){ if(ytPlayer?.playVideo){ try{ytPlayer.playVideo();}catch{} } else { pendingPlay=true; } try{bgm.pause();}catch{} }
       else { try{bgm.play().then(()=>syncMusicBtn());}catch{} }
@@ -552,7 +542,7 @@ Untuk acara Pawiwahan: ${CONFIG.bride} & ${CONFIG.groom} pada ${CONFIG.dateText}
       e.preventDefault(); const f=new FormData(e.target); const n=(f.get('n')||'').trim(); const p=(f.get('p')||'').trim(); if(!n||!p) return;
       entries.push({n,p,t:Date.now()}); localStorage.setItem(LS_KEY, JSON.stringify(entries)); e.target.reset(); renderGuest();
     });
-    function escapeHTML(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;","&gt;":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
+    function escapeHTML(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;"," >":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
 
     // Share
     document.getElementById('btnShare').addEventListener('click', async ()=>{
