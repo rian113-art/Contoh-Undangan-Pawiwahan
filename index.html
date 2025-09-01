@@ -109,6 +109,17 @@
       line-height: 1;
       margin: 6px 0 12px;
     }
+    /* Potret Mempelai — font custom */
+    #portraits > h2{
+      font-family: var(--lux-font);
+      font-weight: 400;
+      font-size: clamp(26px, 7.5vw, 40px);
+      line-height: 1;
+      margin: 6px 0 12px;
+    /* kalau mau diratain tengah, tinggal aktifkan baris di bawah */
+    /* text-align: center; */
+    }
+
     /* Gallery grid */
     .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     @media(min-width:720px){.gallery{grid-template-columns:repeat(4,1fr)}}
@@ -576,3 +587,4 @@ END:VCALENDAR`;
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
+
