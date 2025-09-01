@@ -89,8 +89,8 @@
     .fab-col{position:fixed;right:16px;bottom:16px;display:grid;gap:10px;z-index:40}
     .fab{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:999px;background:#fff;border:1px solid #00000022;box-shadow:var(--shadow);cursor:pointer}
 
-    /* Reveal on scroll */
-    .reveal{opacity:0;transform:translateY(16px);transition:.6s ease}
+    /* Reveal on scroll (lembut) */
+    .reveal{opacity:0;transform:translateY(18px) scale(.98);transition:opacity .65s ease, transform .65s cubic-bezier(.22,.8,.24,1)}
     .reveal.show{opacity:1;transform:none}
 
     footer{padding:30px 0 60px;text-align:center;color:#666}
@@ -107,17 +107,26 @@
     .sponsor-item img{height:34px;width:auto;opacity:.95}
     .sponsor-item .cap{font-size:11px;color:#888;margin-top:6px}
 
-    /* === Portraits (dua foto – bingkai atas/bawah melengkung, sisi lurus) === */
-    .portraits .grid-portraits{ display:grid; gap:18px; grid-template-columns:1fr; }
-    @media(min-width:720px){ .portraits .grid-portraits{ grid-template-columns:1fr 1fr; } }
+    /* === Portraits (dua foto – stadium vertikal) === */
+    .portraits .grid-portraits{
+      display:grid;
+      gap:28px;                 /* jarak default (mobile) */
+      grid-template-columns:1fr;
+    }
+    @media(min-width:720px){
+      .portraits .grid-portraits{
+        grid-template-columns:1fr 1fr;
+        column-gap:40px;        /* jarak antar bingkai pria–wanita */
+        row-gap:28px;
+      }
+    }
     .portrait-card{ display:grid; justify-items:center; gap:10px; text-align:center; }
-    /* frame dengan bentuk stadium (vertical pill): top & bottom curved, sides straight */
     .portrait-frame{
       width:clamp(200px,48vw,320px);
       aspect-ratio:3/4;
-      padding:2px;                 /* tebal ring */
-      border:2px solid #d4af37;    /* warna ring */
-      border-radius:9999px;        /* kunci bentuk “stadium” */
+      padding:2px;                 /* tebal ring: ubah ini */
+      border:2px solid #d4af37;    /* warna ring: ubah ini */
+      border-radius:9999px;        /* stadium vertikal: atas/bawah melengkung */
       overflow:hidden;
       background:#fff;
       box-shadow:var(--shadow);
@@ -299,7 +308,7 @@
       <button class="lb-btn" id="lbClose" aria-label="Tutup">✕</button>
       <button class="lb-btn" id="lbNext" aria-label="Berikutnya">▶</button>
     </div>
-  <img id="lbImg" alt="Foto galeri" />
+    <img id="lbImg" alt="Foto galeri" />
   </div>
 
   <!-- FABs -->
@@ -394,9 +403,22 @@
       img.addEventListener('click',()=>openLightbox(i)); g.appendChild(img);
     });
 
+    // ===== Scroll reveal (IntersectionObserver) =====
+    function setupScrollReveal(){
+      const io = new IntersectionObserver((entries)=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){
+            e.target.classList.add('show');
+            io.unobserve(e.target);
+          }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
+
+      document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+    }
+
     // Open / Cover
     const cover = byId('cover'), app = byId('app'), fabs = byId('fabs');
-    function revealAll(){ $$('.reveal').forEach(el=>el.classList.add('show')); }
 
     // YT support
     function getYTId(input){ if(!input) return ""; const s=String(input).trim(); const m=s.match(/(?:v=|\.be\/|embed\/)([a-zA-Z0-9_-]{11})/); return m?.[1] || (/^[a-zA-Z0-9_-]{11}$/.test(s)?s:""); }
@@ -416,7 +438,8 @@
 
     document.getElementById('openInvite').addEventListener('click', ()=>{
       cover.style.display='none'; app.style.display='block'; fabs.style.display='grid';
-      revealAll(); startCountdown();
+      setupScrollReveal();     // aktifkan efek pop-in saat scroll
+      startCountdown();
       if (USE_YT){ if(ytPlayer?.playVideo){ try{ytPlayer.playVideo();}catch{} } else { pendingPlay=true; } try{bgm.pause();}catch{} }
       else { try{bgm.play().then(()=>syncMusicBtn());}catch{} }
       syncMusicBtn();
@@ -501,5 +524,3 @@ END:VCALENDAR`;
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
-
-
