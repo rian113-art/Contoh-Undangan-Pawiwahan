@@ -34,7 +34,7 @@
       --accent-2:#e0b973;
       --card:#ffffffcc;
       --shadow: 0 10px 25px rgba(0,0,0,.08);
-      /* Font custom dipakai di beberapa elemen */
+      /* Font script mewah */
       --lux-font: 'SouthernAire', ui-serif, Georgia, 'Times New Roman', serif;
     }
 
@@ -46,20 +46,18 @@
     /* Hero / Cover */
     .cover{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.55)), url('cover.jpg') center/cover no-repeat;z-index:50;color:#fff}
     .cover-inner{max-width:680px;text-align:center;padding:24px}
-    .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff33;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1a;backdrop-filter: blur(6px); margin-bottom:6px}
+    .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff33;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1a;backdrop-filter: blur(6px)}
     .title{
-      font-family: var(--lux-font);              /* 1) Pawiwahan / Pernikahan */
-      font-size: clamp(52px, 12vw, 110px);       /* dibesarkan lagi, responsif mobile */
-      line-height: .92;                           /* rapetin sedikit */
-      margin: 8px 0 2px;                          /* jarak diperkecil */
+      /* 1) Pawiwahan / Pernikahan — font custom + lebih besar + jarak diperkecil */
+      font-family: var(--lux-font);
+      font-size: clamp(42px, 10vw, 92px);
+      line-height: 1;
+      margin: 6px 0 4px;   /* jarak vertikal lebih rapat */
       font-weight: 400;
-      letter-spacing: 0;
+      letter-spacing: .2px;
     }
-    .subtitle{
-      opacity:.9;font-size:clamp(14px,2.5vw,18px);
-      margin-top:4px;                             /* rapetin ke judul */
-    }
-    .open-btn{margin-top:18px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:16px;cursor:pointer;box-shadow:var(--shadow);transition:.25s transform}
+    .subtitle{opacity:.9;font-size:clamp(14px,2.5vw,18px)}
+    .open-btn{margin-top:16px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:16px;cursor:pointer;box-shadow:var(--shadow);transition:.25s transform}
     .open-btn:hover{transform:translateY(-2px)}
 
     /* Layout */
@@ -70,13 +68,13 @@
 
     header.hero{padding-top:72px}
     .names{
-      /* 2) Sampek & Duik pakai font custom */
+      /* 2) Sampek & Duik — font custom */
       font-family: var(--lux-font);
+      font-size: clamp(32px, 8vw, 64px);
       font-weight: 400;
-      font-size: clamp(34px, 9.5vw, 72px);
       text-align:center;
-      line-height: 1;            /* rapat & proporsional buat mobile */
-      margin-bottom: 8px;
+      line-height: 1.05;
+      letter-spacing: .2px;
     }
     .date{color:#444;text-align:center;margin-top:6px}
 
@@ -90,14 +88,6 @@
     section{margin:26px 0}
     h2{font-size:clamp(20px,4vw,28px);margin:6px 0 12px}
 
-    /* Potret Mempelai heading pakai font custom */
-    #portraits h2{
-      font-family: var(--lux-font);               /* 3) Potret Mempelai */
-      font-weight: 400;
-      font-size: clamp(24px, 7vw, 38px);
-      line-height: 1;
-    }
-
     /* Info list */
     .info{display:grid;gap:10px}
     .info .row{display:flex;gap:12px;align-items:flex-start}
@@ -107,9 +97,16 @@
     .map{border-radius:16px;overflow:hidden;border:1px solid #00000018}
     .map iframe{width:100%;height:300px;border:0}
 
-    /* Gallery */
-    /* 4) H2 Galeri center (hanya untuk section galeri) */
-    #sectionGallery > h2{ text-align:center; }
+    /* 4) Galeri — font custom + center */
+    #sectionGallery > h2{
+      text-align: center;
+      font-family: var(--lux-font);
+      font-weight: 400;
+      font-size: clamp(24px, 7vw, 38px);
+      line-height: 1;
+      margin: 4px 0 10px;
+    }
+    /* Gallery grid */
     .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     @media(min-width:720px){.gallery{grid-template-columns:repeat(4,1fr)}}
     .gallery img{border-radius:14px;aspect-ratio:1/1;object-fit:cover;border:1px solid #00000018}
@@ -177,23 +174,23 @@
       box-shadow:var(--shadow);
     }
     .portrait-img{ width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block; background:#00000008; }
-
-    /* 3) Nama mempelai bawah bingkai pakai font custom */
     .portrait-name{
+      /* 3) Nama di bawah bingkai — font custom */
       font-family: var(--lux-font);
       font-weight: 400;
-      font-size: clamp(20px, 7vw, 30px);
-      line-height: 1;
+      font-size: clamp(20px, 6.2vw, 32px);
+      line-height: 1.05;
     }
     .portrait-sub{ font-size:12px; color:#666; }
 
-    /* 5) Matur Suksma pakai font custom */
-    .thanks-title{
+    /* 5) Matur Suksma — font custom */
+    .footer-title{
       font-family: var(--lux-font);
       font-weight: 400;
-      font-size: clamp(24px, 7.5vw, 46px);
-      line-height: 1;
+      font-size: clamp(26px, 8vw, 46px);
+      line-height: 1.02;
     }
+    .footer-sub{ font-size:14px; color:#666; }
   </style>
 </head>
 <body>
@@ -235,7 +232,7 @@
   <div class="cover" id="cover">
     <div class="cover-inner">
       <div class="chip">Om Swastyastu • Manusa Yadnya</div>
-      <div class="title">Pawiwahan / Pernikahan</div> <!-- 1) font custom + besar + rapat -->
+      <div class="title">Pawiwahan / Pernikahan</div>
       <p class="subtitle">Ngaturang atur piuning, mugi rahayu. Klik tombol di bawah untuk membuka undangan.</p>
       <button class="open-btn" id="openInvite">Buka Undangan</button>
     </div>
@@ -244,7 +241,7 @@
   <main class="wrap" id="app" style="display:none">
     <header class="hero reveal">
       <div class="card">
-        <div class="names">{{BRIDE}} &amp; {{GROOM}}</div> <!-- 2) font custom -->
+        <div class="names">{{BRIDE}} &amp; {{GROOM}}</div>
         <div class="date">{{PARENTS}}</div>
         <div class="countdown" id="countdown" aria-live="polite"></div>
         <p class="badge">{{DATETEXT}} • {{PLACE}}</p>
@@ -253,14 +250,14 @@
 
     <!-- === POTRET MEMPELAI (dua foto, stadium) === -->
     <section class="card reveal portraits" id="portraits">
-      <h2>Potret Mempelai</h2> <!-- 3) judul pakai font custom via CSS -->
+      <h2>Potret Mempelai</h2>
       <div class="grid-portraits">
         <figure class="portrait-card">
           <div class="portrait-frame">
             <img id="portBride" class="portrait-img" alt="Potret mempelai wanita" />
           </div>
           <figcaption>
-            <div class="portrait-name" id="portBrideName"></div> <!-- 3) nama pakai font custom -->
+            <div class="portrait-name" id="portBrideName"></div>
             <div class="portrait-sub" id="portBrideSub"></div>
           </figcaption>
         </figure>
@@ -269,7 +266,7 @@
             <img id="portGroom" class="portrait-img" alt="Potret mempelai pria" />
           </div>
           <figcaption>
-            <div class="portrait-name" id="portGroomName"></div> <!-- 3) nama pakai font custom -->
+            <div class="portrait-name" id="portGroomName"></div>
             <div class="portrait-sub" id="portGroomSub"></div>
           </figcaption>
         </figure>
@@ -301,9 +298,9 @@
       </div>
     </section>
 
-    <!-- GALERI -->
+    <!-- GALERI (pakai id untuk styling khusus judul) -->
     <section class="card reveal" id="sectionGallery">
-      <h2>Galeri</h2> <!-- 4) center via CSS -->
+      <h2>Galeri</h2>
       <div class="gallery" id="gallery"></div>
     </section>
 
@@ -350,8 +347,8 @@
     </section>
 
     <footer class="reveal">
-      <div class="thanks-title">Matur Suksma</div> <!-- 5) font custom -->
-      <div style="font-size:14px">Atas doa dan kehadiran semeton sami.</div>
+      <div class="footer-title">Matur Suksma</div>
+      <div class="footer-sub">Atas doa dan kehadiran semeton sami.</div>
 
       <!-- Sponsor -->
       <div class="sponsor" id="sponsorBlock">
