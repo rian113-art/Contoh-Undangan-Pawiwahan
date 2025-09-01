@@ -12,9 +12,9 @@
   <meta name="theme-color" content="#f7efe5" />
   <style>
     :root{
-      --bg:#f7efe5; /* lembut krem */
+      --bg:#f7efe5;
       --ink:#2b2b2b;
-      --accent:#ba7a2a; /* emas hangat */
+      --accent:#ba7a2a;
       --accent-2:#e0b973;
       --card:#ffffffcc;
       --rose:#d46d6d;
@@ -24,8 +24,6 @@
     html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family: ui-rounded, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";}
     a{color:var(--accent);text-decoration:none}
     img{max-width:100%;display:block}
-
-    /* Hero / Cover */
     .cover{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.55)), url('cover.jpg') center/cover no-repeat;z-index:50;color:#fff}
     .cover-inner{max-width:680px;text-align:center;padding:24px}
     .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff33;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1a;backdrop-filter: blur(6px)}
@@ -33,74 +31,46 @@
     .subtitle{opacity:.9;font-size:clamp(14px,2.5vw,18px)}
     .open-btn{margin-top:22px;background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff;border:none;border-radius:14px;padding:14px 22px;font-size:16px;cursor:pointer;box-shadow:var(--shadow);transition:.25s transform}
     .open-btn:hover{transform:translateY(-2px)}
-
-    /* Floating flowers */
     .petal{position:fixed;pointer-events:none;top:-60px;filter:drop-shadow(0 6px 10px rgba(0,0,0,.15));opacity:.85}
     @keyframes fall{to{transform:translateY(120vh) rotate(360deg);opacity:.95}}
-
-    /* Layout */
     .wrap{max-width:1080px;margin:0 auto;padding:24px}
     .card{background:var(--card);backdrop-filter: blur(8px);border:1px solid #00000010;border-radius:20px;box-shadow:var(--shadow);padding:22px}
     .grid{display:grid;gap:18px}
     @media(min-width:900px){.grid-2{grid-template-columns:1.2fr .8fr}}
-
     header.hero{padding-top:72px}
     .names{font-size:clamp(26px,5.6vw,48px);font-weight:800;text-align:center}
     .date{color:#444;text-align:center;margin-top:6px}
-
-    /* Countdown */
     .countdown{display:grid;grid-auto-flow:column;gap:10px;justify-content:center;margin:18px 0}
     .cell{background:#fff;border-radius:14px;padding:10px 14px;border:1px solid #00000014;min-width:68px;text-align:center}
     .cell .num{font-size:28px;font-weight:800}
     .cell .lbl{font-size:12px;color:#666}
-
-    /* Sections */
     section{margin:26px 0}
     h2{font-size:clamp(20px,4vw,28px);margin:6px 0 12px}
-
-    /* Info list */
     .info{display:grid;gap:10px}
     .info .row{display:flex;gap:12px;align-items:flex-start}
     .icon{width:24px;height:24px;flex:0 0 24px;opacity:.9}
-
-    /* Map */
     .map{border-radius:16px;overflow:hidden;border:1px solid #00000018}
     .map iframe{width:100%;height:280px;border:0}
-
-    /* Gallery */
     .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
     @media(min-width:720px){.gallery{grid-template-columns:repeat(4,1fr)}}
     .gallery img{border-radius:14px;aspect-ratio:1/1;object-fit:cover;border:1px solid #00000018}
-
-    /* Lightbox */
     .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:60}
     .lightbox.open{display:flex}
     .lightbox img{max-width:92vw;max-height:84vh;border-radius:12px}
     .lb-nav{position:fixed;inset:0;display:flex;align-items:center;justify-content:space-between;padding:24px;color:#fff}
     .lb-btn{background:#ffffff1a;border:1px solid #ffffff33;border-radius:12px;padding:10px 14px;cursor:pointer}
-
-    /* RSVP / Buku Tamu */
     form .field{display:grid;gap:6px;margin:10px 0}
     input, select, textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #00000022;background:#fff;font-size:14px}
     button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;padding:12px 16px;border-radius:14px;font-weight:700;cursor:pointer}
     .notes{font-size:12px;color:#666}
-
     .guestbook .item{background:#fff;border:1px solid #00000014;border-radius:14px;padding:12px;display:grid;gap:4px}
     .guestbook .meta{font-size:12px;color:#666}
-
-    /* Music & Share floating */
     .fab-col{position:fixed;right:16px;bottom:16px;display:grid;gap:10px;z-index:40}
     .fab{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:999px;background:#fff;border:1px solid #00000022;box-shadow:var(--shadow);cursor:pointer}
-
-    /* Reveal on scroll */
     .reveal{opacity:0;transform:translateY(16px);transition: .6s ease}
     .reveal.show{opacity:1;transform:none}
-
     footer{padding:30px 0 60px;text-align:center;color:#666}
-
-    /* Small badge */
     .badge{display:inline-block;background:#fff;border:1px solid #00000014;border-radius:10px;padding:6px 10px;font-size:12px}
-
   </style>
 </head>
 <body>
@@ -115,7 +85,7 @@
       dateText: "Minggu, 28 September 2025 • 10.00 WITA – selesai",
       place: "Dusun Ujung Sari, Desa Subur",
       maps: "https://maps.app.goo.gl/S7hWjjKRmhS3vkGo6",
-      whatsapp: "6287789154894", // ganti dengan nomor WA panitia
+      whatsapp: "6287789154894",
       coverImage: "cover.jpg",
       gallery: ["galeri-1.jpg","galeri-2.jpg","galeri-3.jpg","galeri-4.jpg","galeri-5.jpg","galeri-6.jpg"],
     };
@@ -152,7 +122,7 @@
             <div><strong>Waktu</strong><div id="dateText">{{DATETEXT}}</div></div>
           </div>
           <div class="row"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 21s-7-5.2-7-10.2A7 7 0 0 1 19 10.8C19 15.8 12 21 12 21Z"/></svg>
-            <div><strong>Lokasi</strong><div>{{PLACE}}</div></div>
+            <div><strong>Lokasi</strong><div id="placeText"></div></div>
           </div>
           <div class="row"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
             <div>
@@ -241,7 +211,6 @@
   <!-- FLOATING ACTIONS: music + share -->
   <div class="fab-col" id="fabs" style="display:none">
     <button class="fab" id="btnMusic" aria-label="Musik latar">
-      <!-- play icon -->
       <svg id="iconPlay" viewBox="0 0 24 24" width="22" height="22" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
       <svg id="iconPause" viewBox="0 0 24 24" width="22" height="22" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
     </button>
@@ -249,7 +218,6 @@
   </div>
 
   <audio id="bgm" loop preload="none">
-    <!-- Ganti file musik Anda -->
     <source src="musik.mp3" type="audio/mpeg" />
   </audio>
 
@@ -259,20 +227,34 @@
     const $ = (sel,root=document)=>root.querySelector(sel);
     const $$ = (sel,root=document)=>[...root.querySelectorAll(sel)];
 
-    // Inject dynamic text
+    // Inject dynamic text (header/hero)
     const hero = document.querySelector('header.hero .card');
     hero.innerHTML = hero.innerHTML
-    .replaceAll('{{BRIDE}}', CONFIG.bride)
-    .replaceAll('{{GROOM}}', CONFIG.groom)
-    .replaceAll('{{PARENTS}}', CONFIG.parents)
-    .replaceAll('{{DATETEXT}}', CONFIG.dateText)
-    .replaceAll('{{PLACE}}', CONFIG.place);
+      .replaceAll('{{BRIDE}}', CONFIG.bride)
+      .replaceAll('{{GROOM}}', CONFIG.groom)
+      .replaceAll('{{PARENTS}}', CONFIG.parents)
+      .replaceAll('{{DATETEXT}}', CONFIG.dateText)
+      .replaceAll('{{PLACE}}', CONFIG.place);
 
-
+    // Fill time & place in details section
     byId('dateText').textContent = CONFIG.dateText;
-    const mapUrl = CONFIG.maps;
-    byId('mapFrame').src = mapUrl.replace('/@','/embed?pb='); // best-effort; if fails still fine
-    byId('mapLink').href = mapUrl;
+    const placeEl = byId('placeText');
+    if (placeEl) placeEl.textContent = CONFIG.place;
+
+    // Maps: handle short links by falling back to q=place
+    const mapUrl = CONFIG.maps || "";
+    const embed = (u)=>{
+      try{
+        if(u.includes("/embed")) return u;
+        if(u.includes("maps.app.goo.gl") || u.trim()===""){
+          return "https://www.google.com/maps?q="+encodeURIComponent(CONFIG.place)+"&output=embed";
+        }
+        if(u.includes("/@")) return u.replace("/@","/embed?pb=");
+      }catch{}
+      return "https://www.google.com/maps?q="+encodeURIComponent(CONFIG.place)+"&output=embed";
+    };
+    byId('mapFrame').src = embed(mapUrl);
+    byId('mapLink').href = mapUrl || ("https://www.google.com/maps?q="+encodeURIComponent(CONFIG.place));
     byId('mapLink').textContent = CONFIG.place + ' — Lihat di Maps';
 
     // Populate gallery
@@ -296,8 +278,7 @@
       fabs.style.display='grid';
       startCountdown();
       spawnPetals();
-      // Auto play music (user gesture from click)
-      try{byId('bgm').play().then(()=>syncMusicBtn());}catch{ /* ignore */ }
+      try{byId('bgm').play().then(()=>syncMusicBtn());}catch{}
     });
 
     // ===== Falling petals =====
@@ -306,7 +287,7 @@
         const p=document.createElement('img');
         p.src = toDataURIFlower();
         p.className='petal';
-        const d = 8 + Math.random()*14; // duration
+        const d = 8 + Math.random()*14;
         p.style.left = (Math.random()*100)+'vw';
         p.style.animation = `fall ${d}s linear ${Math.random()*-d}s infinite`;
         p.style.width = (26+Math.random()*16)+'px';
@@ -314,7 +295,6 @@
       }
     }
     function toDataURIFlower(){
-      // tiny inline SVG of frangipani-ish petal
       const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 64 64'>
         <defs><radialGradient id='g' cx='50%' cy='50%' r='50%'><stop offset='0%' stop-color='#fff8e1'/><stop offset='100%' stop-color='#ffd27a'/></radialGradient></defs>
         <g fill='url(#g)' stroke='#e9b35f' stroke-width='1'>
@@ -324,7 +304,7 @@
     }
 
     // ===== Countdown =====
-    let timerId=null; 
+    let timerId=null;
     function startCountdown(){
       const box = byId('countdown');
       const t = new Date(CONFIG.dateISO).getTime();
@@ -360,7 +340,12 @@
     byId('rsvp').addEventListener('submit', e=>{
       e.preventDefault();
       const f = new FormData(e.target);
-      const msg = `Halo, saya *${f.get('name')}*\nStatus: ${f.get('status')}\nJumlah: ${f.get('count')} orang\nUcapan: ${f.get('msg')||'-'}\n\nUntuk acara Mepandes: ${CONFIG.bride} & ${CONFIG.groom} pada ${CONFIG.dateText} di ${CONFIG.place}.`;
+      const msg = `Halo, saya *${f.get('name')}*
+Status: ${f.get('status')}
+Jumlah: ${f.get('count')} orang
+Ucapan: ${f.get('msg')||'-'}
+
+Untuk acara Pawiwahan: ${CONFIG.bride} & ${CONFIG.groom} pada ${CONFIG.dateText} di ${CONFIG.place}.`;
       const url = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`;
       window.open(url, '_blank');
     });
@@ -371,7 +356,7 @@
     const entries = JSON.parse(localStorage.getItem(LS_KEY)||'[]');
     function renderGuest(){
       list.innerHTML='';
-      entries.sort((a,b)=>b.t-a.t).forEach((it,idx)=>{
+      entries.sort((a,b)=>b.t-a.t).forEach((it)=>{
         const div=document.createElement('div');
         div.className='guestbook item';
         div.innerHTML=`<div><strong>${escapeHTML(it.n)}</strong></div>
@@ -392,7 +377,7 @@
       e.target.reset();
       renderGuest();
     });
-    function escapeHTML(s){return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
+    function escapeHTML(s){return s.replace(/[&<>\"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
 
     // ===== Share & Music =====
     const bgm = byId('bgm');
@@ -419,12 +404,25 @@
     byId('btnICS').addEventListener('click', ()=>{
       const dt = new Date(CONFIG.dateISO);
       const dtStart = toICSDate(dt);
-      const dtEnd = toICSDate(new Date(dt.getTime()+3*60*60*1000)); // default 3 jam
-      const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nPRODID:-//Undangan Mepandes//ID\nCALSCALE:GREGORIAN\nBEGIN:VEVENT\nDTSTAMP:${toICSDate(new Date())}\nUID:${crypto.randomUUID()}\nDTSTART:${dtStart}\nDTEND:${dtEnd}\nSUMMARY:Upacara Mepandes – ${CONFIG.bride} & ${CONFIG.groom}\nLOCATION:${escapeICS(CONFIG.place)}\nDESCRIPTION:${escapeICS('Undangan Mepandes. Info: '+CONFIG.place)}\nEND:VEVENT\nEND:VCALENDAR`;
+      const dtEnd = toICSDate(new Date(dt.getTime()+3*60*60*1000));
+      const ics = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Undangan Mepandes//ID
+CALSCALE:GREGORIAN
+BEGIN:VEVENT
+DTSTAMP:${toICSDate(new Date())}
+UID:${crypto.randomUUID()}
+DTSTART:${dtStart}
+DTEND:${dtEnd}
+SUMMARY:Upacara Pawiwahan – ${CONFIG.bride} & ${CONFIG.groom}
+LOCATION:${escapeICS(CONFIG.place)}
+DESCRIPTION:${escapeICS('Undangan Pawiwahan. Info: '+CONFIG.place)}
+END:VEVENT
+END:VCALENDAR`;
       const blob = new Blob([ics],{type:'text/calendar'});
       const a = document.createElement('a');
       a.href = URL.createObjectURL(blob);
-      a.download = 'undangan-mepandes.ics';
+      a.download = 'undangan.ics';
       a.click();
       URL.revokeObjectURL(a.href);
     });
@@ -432,7 +430,7 @@
       const pad=n=>String(n).padStart(2,'0');
       return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z';
     }
-    function escapeICS(s){return s.replace(/[\\;,\n]/g, m=>({"\\":"\\\\",";":"\\;",",":["\\,\n"],"\n":"\\n"}[m]));}
+    function escapeICS(s){return s.replace(/[\\;,\\n]/g, m=>({"\\":"\\\\",";":"\\;",",":"\\,","\\n":"\\n"}[m]));}
 
     // ===== Reveal on scroll =====
     const io = new IntersectionObserver((entries)=>{
@@ -443,7 +441,3 @@
   </script>
 </body>
 </html>
-
-
-
-
