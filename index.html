@@ -306,6 +306,9 @@
     const fabs = byId('fabs');
     const openBtn = byId('openInvite');
 
+    // Tampilkan semua elemen .reveal (fix hilang konten)
+    function revealAll(){ $$('.reveal').forEach(el=>el.classList.add('show')); }
+
     // ===== YouTube BGM Support (stabil dengan pendingPlay) =====
     function getYTId(input){
       if(!input) return "";
@@ -367,6 +370,7 @@
       cover.style.display='none';
       app.style.display='block';
       fabs.style.display='grid';
+      revealAll();            // <- penting: tampilkan semua section
       startCountdown();
 
       if (USE_YT) {
