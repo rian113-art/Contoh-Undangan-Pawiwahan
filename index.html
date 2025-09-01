@@ -97,6 +97,11 @@
 
     footer{padding:30px 0 60px;text-align:center;color:#666}
     .badge{display:inline-block;background:#fff;border:1px solid #00000014;border-radius:10px;padding:6px 10px;font-size:12px}
+
+    /* Sponsor / watermark */
+    .sponsor{margin-top:14px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;color:#666}
+    .sponsor img{height:28px;width:auto;opacity:.9}
+    .sponsor .sponsor-by{font-size:12px}
   </style>
 </head>
 <body>
@@ -107,7 +112,7 @@
     bride: "Sampek",
     groom: "Duik",
     parents: "Putra & putri Peradah Dusun Ujung Sari awokawokaowk",
-    dateISO: "2025-09-05T10:00:00+08:00", // 28 Sept 2025, 10:00 WITA
+    dateISO: "2025-09-05T10:00:00+08:00",
     dateText: "Minggu, 5 September 2025 • 10.00 WITA – selesai",
     place: "Dusun Ujung Sari, Desa Subur",
     maps: "https://maps.app.goo.gl/S7hWjjKRmhS3vkGo6",
@@ -116,7 +121,12 @@
     gallery: ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"],
 
     /* Musik YouTube (pakai ID/URL). Kosongkan "" bila ingin pakai musik.mp3 */
-    youtube: "https://youtu.be/L2I7hZqC7lY?si=yAiNTx3aji-g6nfD"
+    youtube: "https://youtu.be/L2I7hZqC7lY?si=yAiNTx3aji-g6nfD",
+
+    /* ==== Sponsor / watermark ==== */
+    sponsorLogo: "sponsor.png",        // ganti ke file logo kamu (upload ke repo)
+    sponsorText: "Nama Sponsor / Studio",
+    sponsorLink: ""                    // opsional, isi URL jika logo bisa di-klik
   };
   document.title = CONFIG.title;
 </script>
@@ -222,6 +232,12 @@
     <footer class="reveal">
       <div style="font-size:18px">Matur Suksma</div>
       <div style="font-size:14px">Atas doa dan kehadiran semeton sami.</div>
+
+      <!-- Sponsor / watermark -->
+      <div class="sponsor" id="sponsorBlock">
+        <img id="sponsorLogo" alt="Sponsor" />
+        <div class="sponsor-by">sponsored by: <span id="sponsorText"></span></div>
+      </div>
     </footer>
   </main>
 
@@ -274,6 +290,35 @@
     const placeEl = byId('placeText');
     if (placeEl) placeEl.textContent = CONFIG.place;
 
+    // Sponsor block
+    (function(){
+      const textEl = byId('sponsorText');
+      const imgEl  = byId('sponsorLogo');
+      const block  = byId('sponsorBlock');
+      if (!textEl || !imgEl || !block) return;
+
+      textEl.textContent = CONFIG.sponsorText || '';
+
+      if (CONFIG.sponsorLogo) {
+        imgEl.src = CONFIG.sponsorLogo;
+        imgEl.onerror = ()=>{ imgEl.style.display='none'; };
+      } else {
+        imgEl.style.display='none';
+      }
+
+      if (CONFIG.sponsorLink) {
+        const a = document.createElement('a');
+        a.href = CONFIG.sponsorLink;
+        a.target = "_blank";
+        a.rel = "noopener";
+        imgEl.parentNode.insertBefore(a, imgEl);
+        a.appendChild(imgEl);
+      }
+
+      // sembunyikan seluruh blok bila tak ada logo & teks
+      if (!CONFIG.sponsorLogo && !CONFIG.sponsorText) block.style.display='none';
+    })();
+
     // Maps: handle short links by falling back to q=place
     const mapUrl = CONFIG.maps || "";
     const embed = (u)=>{
@@ -306,7 +351,7 @@
     const fabs = byId('fabs');
     const openBtn = byId('openInvite');
 
-    // Tampilkan semua elemen .reveal (fix hilang konten)
+    // Tampilkan semua elemen .reveal
     function revealAll(){ $$('.reveal').forEach(el=>el.classList.add('show')); }
 
     // ===== YouTube BGM Support (stabil dengan pendingPlay) =====
@@ -321,7 +366,7 @@
     const USE_YT = !!YT_ID;
 
     let ytPlayer = null;
-    let pendingPlay = false; // antrian play kalau player belum siap
+    let pendingPlay = false;
 
     window.onYouTubeIframeAPIReady = function(){
       if(!USE_YT) return;
@@ -330,12 +375,12 @@
         playerVars: {
           autoplay: 0,
           loop: 1,
-          playlist: YT_ID,   // wajib untuk loop
+          playlist: YT_ID,
           controls: 0,
           modestbranding: 1,
           rel: 0,
           fs: 0,
-          playsinline: 1     // iOS biar inline
+          playsinline: 1
         },
         events: {
           onReady: () => {
@@ -349,7 +394,7 @@
       });
     };
 
-    // ===== Music controls (support YT atau <audio>) =====
+    // ===== Music controls =====
     const bgm = byId('bgm');
     const iconPlay  = byId('iconPlay');
     const iconPause = byId('iconPause');
@@ -370,14 +415,14 @@
       cover.style.display='none';
       app.style.display='block';
       fabs.style.display='grid';
-      revealAll();            // <- penting: tampilkan semua section
+      revealAll();
       startCountdown();
 
       if (USE_YT) {
         if (ytPlayer && ytPlayer.playVideo) {
           try { ytPlayer.playVideo(); } catch {}
         } else {
-          pendingPlay = true; // nanti jalan saat onReady
+          pendingPlay = true;
         }
         try { bgm.pause(); } catch {}
       } else {
@@ -528,7 +573,3 @@ END:VCALENDAR`;
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
-
-
-
-
