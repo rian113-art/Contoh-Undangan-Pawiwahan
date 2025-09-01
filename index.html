@@ -10,7 +10,6 @@
   <meta property="og:type" content="website" />
   <meta property="og:image" content="" />
   <meta name="theme-color" content="#f7efe5" />
-  <!-- Percepat pemuatan YouTube -->
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://i.ytimg.com">
   <style>
@@ -98,10 +97,20 @@
     footer{padding:30px 0 60px;text-align:center;color:#666}
     .badge{display:inline-block;background:#fff;border:1px solid #00000014;border-radius:10px;padding:6px 10px;font-size:12px}
 
-    /* Sponsor / watermark */
-    .sponsor{margin-top:14px;display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;color:#666}
-    .sponsor img{height:28px;width:auto;opacity:.9}
-    .sponsor .sponsor-by{font-size:12px}
+    /* Sponsor (multi, vertikal) */
+    .sponsor{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:10px;color:#666}
+    .sponsor-heading{font-size:12px}
+    .sponsor-logos{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
+      gap:14px;
+      width:100%;
+      max-width:520px;
+      justify-items:center;
+    }
+    .sponsor-item{display:flex;flex-direction:column;align-items:center;text-align:center}
+    .sponsor-item img{height:34px;width:auto;opacity:.95}
+    .sponsor-item .cap{font-size:11px;color:#888;margin-top:6px}
   </style>
 </head>
 <body>
@@ -123,10 +132,13 @@
     /* Musik YouTube (pakai ID/URL). Kosongkan "" bila ingin pakai musik.mp3 */
     youtube: "https://youtu.be/L2I7hZqC7lY?si=yAiNTx3aji-g6nfD",
 
-    /* ==== Sponsor / watermark ==== */
-    sponsorLogo: "sponsor.png",        // ganti ke file logo kamu (upload ke repo)
-    sponsorText: "Super Grup",
-    sponsorLink: ""                    // opsional, isi URL jika logo bisa di-klik
+    /* ==== Sponsor / watermark (multi, vertikal) ==== */
+    sponsorsHeading: "sponsored by:",
+    sponsors: [
+      // Contoh isi — ganti sesuai logo & nama kamu
+      { logo: "sponsor1.png", name: "Super Grub", link: "" },
+      { logo: "sponsor2.png", name: "Yaatra Studio", link: "" }
+    ]
   };
   document.title = CONFIG.title;
 </script>
@@ -233,10 +245,10 @@
       <div style="font-size:18px">Matur Suksma</div>
       <div style="font-size:14px">Atas doa dan kehadiran semeton sami.</div>
 
-      <!-- Sponsor / watermark -->
+      <!-- Sponsor (multi, vertikal) -->
       <div class="sponsor" id="sponsorBlock">
-        <img id="sponsorLogo" alt="Sponsor" />
-        <div class="sponsor-by">support by: <span id="sponsorText"></span></div>
+        <div class="sponsor-heading" id="sponsorHeading"></div>
+        <div class="sponsor-logos" id="sponsorLogos"></div>
       </div>
     </footer>
   </main>
@@ -290,33 +302,47 @@
     const placeEl = byId('placeText');
     if (placeEl) placeEl.textContent = CONFIG.place;
 
-    // Sponsor block
+    // ===== Sponsor block (multi, vertikal) =====
     (function(){
-      const textEl = byId('sponsorText');
-      const imgEl  = byId('sponsorLogo');
-      const block  = byId('sponsorBlock');
-      if (!textEl || !imgEl || !block) return;
+      const headingEl = byId('sponsorHeading');
+      const logosWrap = byId('sponsorLogos');
+      const block     = byId('sponsorBlock');
 
-      textEl.textContent = CONFIG.sponsorText || '';
+      const list = Array.isArray(CONFIG.sponsors) ? CONFIG.sponsors : [];
+      const hasAnything = (list.length > 0) || (CONFIG.sponsorsHeading && CONFIG.sponsorsHeading.trim() !== "");
+      if (!hasAnything) { block.style.display = 'none'; return; }
 
-      if (CONFIG.sponsorLogo) {
-        imgEl.src = CONFIG.sponsorLogo;
-        imgEl.onerror = ()=>{ imgEl.style.display='none'; };
-      } else {
-        imgEl.style.display='none';
-      }
+      headingEl.textContent = CONFIG.sponsorsHeading || 'sponsored by:';
 
-      if (CONFIG.sponsorLink) {
-        const a = document.createElement('a');
-        a.href = CONFIG.sponsorLink;
-        a.target = "_blank";
-        a.rel = "noopener";
-        imgEl.parentNode.insertBefore(a, imgEl);
-        a.appendChild(imgEl);
-      }
+      list.forEach(it=>{
+        if(!it || !it.logo) return;
+        const item = document.createElement('div');
+        item.className = 'sponsor-item';
 
-      // sembunyikan seluruh blok bila tak ada logo & teks
-      if (!CONFIG.sponsorLogo && !CONFIG.sponsorText) block.style.display='none';
+        const img = document.createElement('img');
+        img.alt = it.name || 'Sponsor';
+        img.src = it.logo;
+        img.onerror = () => { item.style.display='none'; };
+
+        // layout: heading -> (logo) -> (nama)
+        if (it.link) {
+          const a = document.createElement('a');
+          a.href = it.link; a.target = '_blank'; a.rel = 'noopener';
+          a.appendChild(img);
+          item.appendChild(a);
+        } else {
+          item.appendChild(img);
+        }
+
+        if (it.name) {
+          const cap = document.createElement('div');
+          cap.className = 'cap';
+          cap.textContent = it.name;
+          item.appendChild(cap);
+        }
+
+        logosWrap.appendChild(item);
+      });
     })();
 
     // Maps: handle short links by falling back to q=place
@@ -351,10 +377,9 @@
     const fabs = byId('fabs');
     const openBtn = byId('openInvite');
 
-    // Tampilkan semua elemen .reveal
     function revealAll(){ $$('.reveal').forEach(el=>el.classList.add('show')); }
 
-    // ===== YouTube BGM Support (stabil dengan pendingPlay) =====
+    // ===== YouTube BGM Support =====
     function getYTId(input){
       if(!input) return "";
       const s = String(input).trim();
@@ -373,24 +398,10 @@
       ytPlayer = new YT.Player('ytPlayer', {
         videoId: YT_ID,
         playerVars: {
-          autoplay: 0,
-          loop: 1,
-          playlist: YT_ID,
-          controls: 0,
-          modestbranding: 1,
-          rel: 0,
-          fs: 0,
-          playsinline: 1
+          autoplay: 0, loop: 1, playlist: YT_ID,
+          controls: 0, modestbranding: 1, rel: 0, fs: 0, playsinline: 1
         },
-        events: {
-          onReady: () => {
-            if (pendingPlay) {
-              try { ytPlayer.playVideo(); } catch {}
-              pendingPlay = false;
-              syncMusicBtn();
-            }
-          }
-        }
+        events: { onReady: () => { if (pendingPlay) { try{ytPlayer.playVideo();}catch{} pendingPlay=false; syncMusicBtn(); } } }
       });
     };
 
@@ -419,14 +430,11 @@
       startCountdown();
 
       if (USE_YT) {
-        if (ytPlayer && ytPlayer.playVideo) {
-          try { ytPlayer.playVideo(); } catch {}
-        } else {
-          pendingPlay = true;
-        }
-        try { bgm.pause(); } catch {}
+        if (ytPlayer && ytPlayer.playVideo) { try{ ytPlayer.playVideo(); }catch{} }
+        else { pendingPlay = true; }
+        try{ bgm.pause(); }catch{}
       } else {
-        try { bgm.play().then(()=>syncMusicBtn()); } catch {}
+        try{ bgm.play().then(()=>syncMusicBtn()); }catch{}
       }
       syncMusicBtn();
     });
@@ -435,14 +443,9 @@
       if (USE_YT) {
         if (ytPlayer && ytPlayer.getPlayerState) {
           const st = ytPlayer.getPlayerState();
-          if (st === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
-          else ytPlayer.playVideo();
-        } else {
-          pendingPlay = true;
-        }
-      } else {
-        if (bgm.paused) bgm.play(); else bgm.pause();
-      }
+          if (st === YT.PlayerState.PLAYING) ytPlayer.pauseVideo(); else ytPlayer.playVideo();
+        } else { pendingPlay = true; }
+      } else { if (bgm.paused) bgm.play(); else bgm.pause(); }
       syncMusicBtn();
     });
     bgm.addEventListener('ended', syncMusicBtn);
@@ -521,7 +524,7 @@ Untuk acara Pawiwahan: ${CONFIG.bride} & ${CONFIG.groom} pada ${CONFIG.dateText}
       e.target.reset();
       renderGuest();
     });
-    function escapeHTML(s){return s.replace(/[&<>\"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
+    function escapeHTML(s){return s.replace(/[&<>\"']/g, m=>({"&":"&amp;","<":"&lt;","~":"~","\"":"&quot;","'":"&#39;"}[m]) ).replace(/~/g,"tilde");}
 
     // ===== Share =====
     byId('btnShare').addEventListener('click', async ()=>{
@@ -569,9 +572,6 @@ END:VCALENDAR`;
 
   </script>
 
-  <!-- Load YouTube Iframe API (setelah handler di atas terdefinisi) -->
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
-
-
