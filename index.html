@@ -15,7 +15,7 @@
   <link rel="preconnect" href="https://www.youtube.com">
   <link rel="preconnect" href="https://i.ytimg.com">
 
-  <!-- Preload font (same-origin, no need crossorigin) -->
+  <!-- Preload font (same-origin) -->
   <link rel="preload" as="font" href="font/SouthernAire_Personal_Use_Only.ttf?v=2" type="font/ttf">
 
   <style>
@@ -116,8 +116,7 @@
       font-size: clamp(26px, 7.5vw, 40px);
       line-height: 1;
       margin: 6px 0 12px;
-    /* kalau mau diratain tengah, tinggal aktifkan baris di bawah */
-    /* text-align: center; */
+      /* text-align: center; */ /* aktifkan kalau mau center */
     }
 
     /* Gallery grid */
@@ -189,7 +188,7 @@
     }
     .portrait-img{ width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block; background:#00000008; }
 
-    /* 3) Nama di bawah bingkai — font custom (pakai !important agar tak ketimpa) */
+    /* 3) Nama di bawah bingkai — font custom */
     .portrait-name{
       font-family: var(--lux-font) !important;
       font-weight: 400;
@@ -206,6 +205,41 @@
       line-height: 1.02;
     }
     .footer-sub{ font-size:14px; color:#666; }
+
+    /* ======== Gift Modal (Beri Hadiah) ======== */
+    .gift-wrap{display:flex;justify-content:center}
+    .gift-btn{
+      display:inline-flex;align-items:center;gap:8px;
+      background:#fff;border:1px solid #00000022;border-radius:14px;
+      padding:12px 16px;cursor:pointer;box-shadow:var(--shadow);font-weight:700
+    }
+
+    .gift-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:70}
+    .gift-modal.open{display:flex}
+    .gift-pane{
+      width:min(740px,92vw);background:var(--card);border:1px solid #00000018;border-radius:20px;box-shadow:var(--shadow);
+      padding:16px;opacity:0;transform:translateY(12px) scale(.98);transition:.35s
+    }
+    .gift-modal.open .gift-pane{opacity:1;transform:none}
+    .gift-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
+    .gift-title{font-weight:800}
+    .gift-close{background:#ffffff1a;border:1px solid #00000022;border-radius:12px;padding:8px 10px;cursor:pointer}
+
+    .gift-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+    .gift-card{
+      background:#fff;border:1px solid #00000014;border-radius:16px;padding:14px;position:relative;overflow:hidden
+    }
+    .gift-card::before{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
+    .gift-bank{font-weight:800;letter-spacing:.5px;margin-bottom:6px}
+    .gift-acc{font-size:18px;font-weight:800}
+    .gift-name{font-size:12px;color:#666}
+    .gift-actions{margin-top:10px;display:flex;gap:8px}
+    .copy-btn,.open-wa{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;
+      padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer
+    }
+    .open-wa{background:#fff;border:1px solid #00000022;color:#333}
+    .copy-done{font-size:12px;color:#3a7e3a;margin-left:6px}
   </style>
 </head>
 <body>
@@ -231,7 +265,12 @@
     portraits: {
       bride: { src: "potret-wanita.jpg", name: "Duik",   sub: "Putri pertama dari Pasangan......" },
       groom: { src: "potret-pria.jpg",   name: "Sampek", sub: "Putra pertama dari Pasangan....." }
-    }
+    },
+    /* === Data Beri Hadiah (edit sesuai kebutuhan) === */
+    gifts: [
+      { bank: "BNI", acc: "0123xxxxxx", name: "Bakwan" },
+      { bank: "BRI", acc: "98765xxxxx", name: "Martabak" }
+    ]
   };
   document.title = CONFIG.title;
 </script>
@@ -281,7 +320,13 @@
       </div>
     </section>
 
-    <!-- WAKTU & TEMPAT -->
+    <!-- GALERI -->
+    <section class="card reveal" id="sectionGallery">
+      <h2>Galeri</h2>
+      <div class="gallery" id="gallery"></div>
+    </section>
+
+    <!-- WAKTU & TEMPAT (dipindah ke bawah Galeri) -->
     <section class="reveal">
       <div class="card">
         <h2>Waktu & Tempat</h2>
@@ -304,12 +349,6 @@
           </div>
         </div>
       </div>
-    </section>
-
-    <!-- GALERI -->
-    <section class="card reveal" id="sectionGallery">
-      <h2>Galeri</h2>
-      <div class="gallery" id="gallery"></div>
     </section>
 
     <!-- MAP -->
@@ -345,6 +384,13 @@
       </div>
     </section>
 
+    <!-- BERi HADIAH (di bawah Buku Tamu) -->
+    <section class="reveal">
+      <div class="card gift-wrap">
+        <button class="gift-btn" id="btnGift">🎁 Beri Hadiah</button>
+      </div>
+    </section>
+
     <section class="card reveal">
       <h2>Protokol & Catatan</h2>
       <ul>
@@ -364,6 +410,18 @@
       </div>
     </footer>
   </main>
+
+  <!-- GIFT MODAL -->
+  <div class="gift-modal" id="giftModal" aria-modal="true" role="dialog">
+    <div class="gift-pane" role="document">
+      <div class="gift-head">
+        <div class="gift-title">Beri Hadiah</div>
+        <button class="gift-close" id="giftClose" aria-label="Tutup">✕</button>
+      </div>
+      <div class="gift-cards" id="giftCards"><!-- filled by JS --></div>
+      <div class="notes" style="margin-top:10px">Terima kasih atas dukungan dan doa restunya 🙏</div>
+    </div>
+  </div>
 
   <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
@@ -467,7 +525,34 @@
       img.addEventListener('click',()=>openLightbox(i)); g.appendChild(img);
     });
 
-    // Scroll reveal
+    // ===== Gift modal build =====
+    (function(){
+      const data = Array.isArray(CONFIG.gifts) ? CONFIG.gifts : [];
+      const wrap = byId('giftCards');
+      if (!wrap || data.length===0) return;
+
+      wrap.innerHTML = '';
+      data.forEach((it, i)=>{
+        const div = document.createElement('div');
+        div.className = 'gift-card';
+        const bank = (it.bank||'BANK').toUpperCase();
+        const acc  = String(it.acc||'');
+        const name = it.name||'';
+        div.innerHTML = `
+          <div class="gift-bank">${bank}</div>
+          <div class="gift-acc" data-acc="${acc}">${acc}</div>
+          <div class="gift-name">a.n. ${name}</div>
+          <div class="gift-actions">
+            <button class="copy-btn" data-copy="${acc}">Salin No. Rekening</button>
+            <button class="open-wa" data-wa="${acc}" data-bank="${bank}">Kirim via WA</button>
+          </div>
+          <div class="copy-done" style="display:none">Disalin ✓</div>
+        `;
+        wrap.appendChild(div);
+      });
+    })();
+
+    // ===== Scroll reveal =====
     function setupScrollReveal(){
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
@@ -514,6 +599,34 @@
       syncMusicBtn();
     });
 
+    // ===== Gift modal logic =====
+    const giftModal = byId('giftModal');
+    const btnGift = byId('btnGift');
+    const giftClose = byId('giftClose');
+    btnGift?.addEventListener('click', ()=> giftModal.classList.add('open'));
+    giftClose?.addEventListener('click', ()=> giftModal.classList.remove('open'));
+    giftModal?.addEventListener('click', (e)=>{ if(e.target===giftModal) giftModal.classList.remove('open'); });
+
+    // Copy buttons + open WA
+    byId('giftCards')?.addEventListener('click', async (e)=>{
+      const btn = e.target.closest('button');
+      if(!btn) return;
+      if(btn.classList.contains('copy-btn')){
+        const text = btn.dataset.copy||'';
+        try{
+          await navigator.clipboard.writeText(text);
+          const info = btn.parentElement.nextElementSibling;
+          if(info){ info.style.display='inline'; setTimeout(()=>info.style.display='none', 1400); }
+        }catch{}
+      }
+      if(btn.classList.contains('open-wa')){
+        const acc = btn.dataset.wa||'';
+        const bank= btn.dataset.bank||'';
+        const msg = `Halo, saya ingin mengirim hadiah.\nBank: ${bank}\nNo. Rekening: ${acc}\nTerima kasih.`;
+        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank');
+      }
+    });
+
     // Countdown
     let timerId=null;
     function startCountdown(){
@@ -553,7 +666,7 @@ Untuk acara Pawiwahan: ${CONFIG.bride} & ${CONFIG.groom} pada ${CONFIG.dateText}
       e.preventDefault(); const f=new FormData(e.target); const n=(f.get('n')||'').trim(); const p=(f.get('p')||'').trim(); if(!n||!p) return;
       entries.push({n,p,t:Date.now()}); localStorage.setItem(LS_KEY, JSON.stringify(entries)); e.target.reset(); renderGuest();
     });
-    function escapeHTML(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;"," >":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
+    function escapeHTML(s){ return s.replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
 
     // Share
     document.getElementById('btnShare').addEventListener('click', async ()=>{
@@ -587,4 +700,3 @@ END:VCALENDAR`;
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
-
