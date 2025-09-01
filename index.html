@@ -74,7 +74,7 @@
   </style>
 </head>
 <body>
- <!-- CONFIG: ubah data di sini -->
+<!-- CONFIG: ubah data di sini -->
 <script>
   const CONFIG = {
     title: "Undangan Pawiwahan – Erik & Wangi",
@@ -89,9 +89,13 @@
     coverImage: "cover.jpg",
     gallery: ["galeri-1.jpg","galeri-2.jpg","galeri-3.jpg","galeri-4.jpg","galeri-5.jpg","galeri-6.jpg"],
 
-    /* === Tambahkan baris ini untuk musik YouTube === */
-    youtube: "VIDEO_ID_ATAU_URL_YT" 
-    // Contoh: "dQw4w9WgXcQ" atau "https://youtu.be/dQw4w9WgXcQ"
+    /* === Musik YouTube (opsional) ===
+       - Isi dengan ID atau URL YouTube, contoh:
+         youtube: "dQw4w9WgXcQ"
+         atau
+         youtube: "https://youtu.be/dQw4w9WgXcQ"
+       - Jika dibiarkan "", akan pakai musik.mp3 sebagai fallback. */
+    youtube: "https://youtu.be/L2I7hZqC7lY?si=1ep6AXyKCrskDs8E"
   };
   document.title = CONFIG.title;
 </script>
@@ -221,9 +225,16 @@
     <button class="fab" id="btnShare" aria-label="Bagikan">🔗</button>
   </div>
 
+  <!-- Fallback audio file -->
   <audio id="bgm" loop preload="none">
     <source src="musik.mp3" type="audio/mpeg" />
   </audio>
+
+  <!-- (YouTube) Player API + Container tersembunyi -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <div id="ytWrap" aria-hidden="true" style="position:fixed;left:-9999px;top:auto;width:1px;height:1px;opacity:0;pointer-events:none">
+    <div id="ytPlayer"></div>
+  </div>
 
   <script>
     // ===== Helper & Setup =====
@@ -276,14 +287,73 @@
     const app = byId('app');
     const fabs = byId('fabs');
     const openBtn = byId('openInvite');
+
+    // ===== YouTube BGM Support (optional via CONFIG.youtube) =====
+    function getYTId(input){
+      if(!input) return "";
+      const s = String(input).trim();
+      const m = s.match(/(?:v=|\.be\/|embed\/)([a-zA-Z0-9_-]{11})/);
+      if (m && m[1]) return m[1];
+      return /^[a-zA-Z0-9_-]{11}$/.test(s) ? s : "";
+    }
+    const YT_ID = getYTId(CONFIG.youtube);
+    const USE_YT = !!YT_ID;
+    let ytPlayer = null;
+
+    window.onYouTubeIframeAPIReady = function(){
+      if(!USE_YT) return;
+      ytPlayer = new YT.Player('ytPlayer', {
+        videoId: YT_ID,
+        playerVars: {
+          autoplay: 0, loop: 1, playlist: YT_ID,
+          controls: 0, modestbranding: 1, rel: 0, fs: 0
+        }
+      });
+    };
+
+    // ===== Music controls (support YT or <audio>) =====
+    const bgm = byId('bgm');
+    const iconPlay  = byId('iconPlay');
+    const iconPause = byId('iconPause');
+
+    function isMusicPlaying(){
+      if (USE_YT && ytPlayer && ytPlayer.getPlayerState) {
+        return ytPlayer.getPlayerState() === YT.PlayerState.PLAYING;
+      }
+      return !bgm.paused;
+    }
+    function syncMusicBtn(){
+      const playing = isMusicPlaying();
+      iconPlay.style.display  = playing ? 'none' : 'block';
+      iconPause.style.display = playing ? 'block' : 'none';
+    }
+
     openBtn.addEventListener('click', ()=>{
       cover.style.display='none';
       app.style.display='block';
       fabs.style.display='grid';
       startCountdown();
       spawnPetals();
-      try{byId('bgm').play().then(()=>syncMusicBtn());}catch{}
+
+      if (USE_YT && ytPlayer && ytPlayer.playVideo) {
+        try { ytPlayer.playVideo(); } catch {}
+      } else {
+        try { bgm.play().then(()=>syncMusicBtn()); } catch {}
+      }
+      syncMusicBtn();
     });
+
+    byId('btnMusic').addEventListener('click', ()=>{
+      if (USE_YT && ytPlayer && ytPlayer.getPlayerState) {
+        const st = ytPlayer.getPlayerState();
+        if (st === YT.PlayerState.PLAYING) ytPlayer.pauseVideo();
+        else ytPlayer.playVideo();
+      } else {
+        if (bgm.paused) bgm.play(); else bgm.pause();
+      }
+      syncMusicBtn();
+    });
+    bgm.addEventListener('ended', syncMusicBtn);
 
     // ===== Falling petals =====
     function spawnPetals(){
@@ -383,18 +453,7 @@ Untuk acara Pawiwahan: ${CONFIG.bride} & ${CONFIG.groom} pada ${CONFIG.dateText}
     });
     function escapeHTML(s){return s.replace(/[&<>\"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));}
 
-    // ===== Share & Music =====
-    const bgm = byId('bgm');
-    const iconPlay = byId('iconPlay');
-    const iconPause = byId('iconPause');
-    function syncMusicBtn(){
-      const isPlaying = !bgm.paused;
-      iconPlay.style.display = isPlaying ? 'none':'block';
-      iconPause.style.display = isPlaying ? 'block':'none';
-    }
-    byId('btnMusic').addEventListener('click', ()=>{ if(bgm.paused) bgm.play(); else bgm.pause(); syncMusicBtn(); });
-    bgm.addEventListener('ended', syncMusicBtn);
-
+    // ===== Share =====
     byId('btnShare').addEventListener('click', async ()=>{
       const shareData = { title: CONFIG.title, text: `Undangan: ${CONFIG.bride} & ${CONFIG.groom} – ${CONFIG.dateText}`, url: location.href };
       if(navigator.share){ try{ await navigator.share(shareData);}catch{} }
@@ -434,7 +493,9 @@ END:VCALENDAR`;
       const pad=n=>String(n).padStart(2,'0');
       return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z';
     }
-    function escapeICS(s){return s.replace(/[\\;,\\n]/g, m=>({"\\":"\\\\",";":"\\;",",":"\\,","\\n":"\\n"}[m]));}
+    function escapeICS(s){
+      return s.replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n');
+    }
 
     // ===== Reveal on scroll =====
     const io = new IntersectionObserver((entries)=>{
@@ -445,4 +506,3 @@ END:VCALENDAR`;
   </script>
 </body>
 </html>
-
