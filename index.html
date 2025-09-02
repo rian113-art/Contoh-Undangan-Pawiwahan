@@ -286,7 +286,7 @@
     whatsapp: "6287789154894",
     coverImage: "cover.jpg",
 
-    gallery: ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"],
+    gallery: ["foto11.jpg","foto22.jpg","foto33.jpg","foto44.jpg","foto55.jpg","foto66.jpg"],
 
     youtube: "https://youtu.be/L2I7hZqC7lY?si=yAiNTx3aji-g6nfD",
     sponsorsHeading: "support by:",
@@ -300,22 +300,14 @@
     },
 
     rundown: [
-      {
-        date: "23 September 2025",
-        title: "Ngidih",
-        desc: "upacara lamaran, pihak purusa ngaturangang idih ring pihak pradana."
-      },
-      {
-        date: "29 September 2025",
-        title: "Resepsi Pawiwahan",
-        desc: "acara resepsi pernikahan, ngaturangang pangastuti/terima kasih ring sami tamu undangan sane rawuh."
-      }
+      { date: "23 September 2025", title: "Ngidih",            desc: "upacara lamaran, pihak purusa ngaturangang idih ring pihak pradana." },
+      { date: "29 September 2025", title: "Resepsi Pawiwahan", desc: "acara resepsi pernikahan, ngaturangang pangastuti/terima kasih ring sami tamu undangan sane rawuh." }
     ],
 
     /* Gift */
     gifts: [
-      { bank: "BRI", acc: "901378610220", name: "I Luh Wangi" },
-      { bank: "E-Wallet DANA", acc: "xxxxxx", name: "xxxxxx" }
+      { bank: "BRI",            acc: "901378610220", name: "I Luh Wangi" },
+      { bank: "E-Wallet DANA",  acc: "xxxxxx",       name: "xxxxxx" }
     ]
   };
   document.title = CONFIG.title;
@@ -686,8 +678,31 @@
         const acc = btn.dataset.wa||'';
         const bank= btn.dataset.bank||'';
         const msg = `Halo, saya ingin mengirim hadiah.\nBank: ${bank}\nNo. Rekening: ${acc}\nTerima kasih.`;
-        window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank');
+        window.location.href = `https://wa.me/${CONFIG.whatsapp.replace(/[^\d]/g,'')}?text=${encodeURIComponent(msg)}`;
       }
+    });
+
+    // === RSVP -> WhatsApp (fix: cegah reload & buka WA di tab ini) ===
+    byId('rsvp')?.addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const f = new FormData(e.target);
+      const name  = (f.get('name')  || '').toString().trim();
+      const status= (f.get('status')|| 'Hadir');
+      const count = (f.get('count') || '1');
+      const ucapan= ((f.get('msg')  || '').toString().trim()) || '-';
+
+      const text = `Halo, saya *${name}*
+Status: ${status}
+Jumlah: ${count} orang
+Ucapan: ${ucapan}
+
+Untuk acara Pawiwahan: ${CONFIG.bride} & ${CONFIG.groom} pada ${CONFIG.dateText} di ${CONFIG.place}.`;
+
+      const num = (CONFIG.whatsapp || '').replace(/[^\d]/g,''); // sanitasi nomor
+      const url = `https://wa.me/${num}?text=${encodeURIComponent(text)}`;
+
+      // Buka di tab yang sama (menghindari popup blocker)
+      window.location.href = url;
     });
 
     // Countdown
@@ -717,7 +732,7 @@
 
     // Utils
     function escapeHTML(s){
-      return String(s||'').replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+      return String(s||'').replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;","<": "&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
     }
 
     // Share
