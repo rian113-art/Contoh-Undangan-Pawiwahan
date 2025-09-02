@@ -134,9 +134,6 @@
     button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;padding:12px 16px;border-radius:14px;font-weight:700;cursor:pointer}
     .notes{font-size:12px;color:#666}
 
-    .guestbook .item{background:#fff;border:1px solid #00000014;border-radius:14px;padding:12px;display:grid;gap:4px}
-    .guestbook .meta{font-size:12px;color:#666}
-
     /* Floating FABs */
     .fab-col{position:fixed;right:16px;bottom:16px;display:grid;gap:10px;z-index:40}
     .fab{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:999px;background:#fff;border:1px solid #00000022;box-shadow:var(--shadow);cursor:pointer}
@@ -261,12 +258,10 @@
       margin:0 0 14px 0;
       box-shadow:var(--shadow);
     }
-    /* titik harus tepat di garis vertikal (garis di 13px dari sisi kiri container) */
     .timeline li::before{
       content:"";
       position:absolute;
-      /* total diameter titik = 12 + border(2*2) = 16 => set kiri = -13 - 8 = -21 */
-      left:-21px;
+      left:-21px; /* sejajar garis vertikal */
       top:22px;
       width:12px; height:12px; border-radius:999px;
       background: linear-gradient(90deg,var(--accent),var(--accent-2));
@@ -304,7 +299,6 @@
       groom: { src: "potret-pria.jpg",   name: "Putu Erik Sudiastika", sub: "Putra pertama dari Pasangan Komang Astini & I Wayan Budiasta" }
     },
 
-    /* 2 item sesuai permintaan */
     rundown: [
       {
         date: "23 September 2025",
@@ -378,7 +372,7 @@
       <div class="gallery" id="gallery"></div>
     </section>
 
-    <!-- RUNTUTAN ACARA (tanpa font custom, titik sejajar garis) -->
+    <!-- RUNTUTAN ACARA -->
     <section class="card reveal" id="rundown">
       <h2>Runtutan Acara Pawiwahan</h2>
       <ol class="timeline" id="rundownList"></ol>
@@ -415,34 +409,22 @@
       <div style="padding:10px 4px"><a id="mapLink" target="_blank" rel="noopener">Buka di Google Maps</a></div>
     </section>
 
-    <!-- RSVP & BUKU TAMU -->
-    <section class="grid grid-2">
-      <div class="card reveal">
-        <h2>Konfirmasi Kehadiran</h2>
-        <form id="rsvp">
-          <div class="field"><label>Nama</label><input required name="name" placeholder="Nama lengkap" /></div>
-          <div class="field"><label>Status Kehadiran</label>
-            <select name="status"><option value="Hadir">Hadir</option><option value="Tidak dapat hadir">Tidak dapat hadir</option></select>
-          </div>
-          <div class="field"><label>Jumlah Tamu</label><input type="number" name="count" value="1" min="1" /></div>
-          <div class="field"><label>Ucapan (opsional)</label><textarea name="msg" rows="3" placeholder="Doa/ucapan singkat"></textarea></div>
-          <button class="primary" type="submit">Kirim via WhatsApp</button>
-          <p class="notes">Tombol akan membuka WhatsApp dengan format pesan otomatis.</p>
-        </form>
-      </div>
-      <div class="card reveal">
-        <h2>Buku Tamu</h2>
-        <form id="guestForm">
-          <div class="field"><label>Nama</label><input required name="n" placeholder="Nama"/></div>
-          <div class="field"><label>Pesan</label><textarea required name="p" rows="3" placeholder="Tulis doa/ucapan"></textarea></div>
-          <button class="primary" type="submit">Kirim</button>
-        </form>
-        <div class="notes" style="margin-top:8px">Disimpan secara lokal di perangkat Anda.</div>
-        <div class="grid" style="margin-top:12px" id="guestList"></div>
-      </div>
+    <!-- RSVP (Buku Tamu dihapus) -->
+    <section class="card reveal">
+      <h2>Konfirmasi Kehadiran</h2>
+      <form id="rsvp">
+        <div class="field"><label>Nama</label><input required name="name" placeholder="Nama lengkap" /></div>
+        <div class="field"><label>Status Kehadiran</label>
+          <select name="status"><option value="Hadir">Hadir</option><option value="Tidak dapat hadir">Tidak dapat hadir</option></select>
+        </div>
+        <div class="field"><label>Jumlah Tamu</label><input type="number" name="count" value="1" min="1" /></div>
+        <div class="field"><label>Ucapan (opsional)</label><textarea name="msg" rows="3" placeholder="Doa/ucapan singkat"></textarea></div>
+        <button class="primary" type="submit">Kirim via WhatsApp</button>
+        <p class="notes">Tombol akan membuka WhatsApp dengan format pesan otomatis.</p>
+      </form>
     </section>
 
-    <!-- BERi HADIAH (di bawah Buku Tamu) -->
+    <!-- BERi HADIAH (di bawah RSVP) -->
     <section class="reveal">
       <div class="card gift-wrap">
         <button class="gift-btn" id="btnGift">🎁 Beri Hadiah</button>
@@ -590,7 +572,7 @@
       });
     })();
 
-    // === Runtutan Acara build (pakai kelas tl-* agar tidak bentrok font custom) ===
+    // === Runtutan Acara build
     (function(){
       const data = Array.isArray(CONFIG.rundown) ? CONFIG.rundown : [];
       const list = byId('rundownList');
@@ -733,15 +715,10 @@
       if(e.key==='ArrowLeft') document.getElementById('lbPrev').click();
     });
 
-    // Guestbook (local)
-    const LS_KEY='guestbook-mepandes'; const list=document.getElementById('guestList'); const entries=JSON.parse(localStorage.getItem(LS_KEY)||'[]');
-    function renderGuest(){ list.innerHTML=''; entries.sort((a,b)=>b.t-a.t).forEach(it=>{ const d=document.createElement('div'); d.className='guestbook item'; d.innerHTML=`<div><strong>${escapeHTML(it.n)}</strong></div><div>${escapeHTML(it.p)}</div><div class='meta'>${new Date(it.t).toLocaleString('id-ID')}</div>`; list.appendChild(d); }); }
-    renderGuest();
-    document.getElementById('guestForm').addEventListener('submit', e=>{
-      e.preventDefault(); const f=new FormData(e.target); const n=(f.get('n')||'').trim(); const p=(f.get('p')||'').trim(); if(!n||!p) return;
-      entries.push({n,p,t:Date.now()}); localStorage.setItem(LS_KEY, JSON.stringify(entries)); e.target.reset(); renderGuest();
-    });
-    function escapeHTML(s){ return String(s||'').replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m])); }
+    // Utils
+    function escapeHTML(s){
+      return String(s||'').replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
+    }
 
     // Share
     document.getElementById('btnShare').addEventListener('click', async ()=>{
@@ -775,4 +752,3 @@ END:VCALENDAR`;
   <script src="https://www.youtube.com/iframe_api"></script>
 </body>
 </html>
-
