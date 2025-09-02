@@ -50,7 +50,6 @@
     .cover{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.55)), url('cover.jpg') center/cover no-repeat;z-index:50;color:#fff}
     .cover-inner{max-width:680px;text-align:center;padding:24px}
     .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff33;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1a;backdrop-filter: blur(6px)}
-    /* Judul cover — font custom */
     .title{
       font-family: var(--lux-font);
       font-size: clamp(46px, 11vw, 96px);
@@ -70,7 +69,6 @@
     @media(min-width:900px){.grid-2{grid-template-columns:1.2fr .8fr}}
 
     header.hero{padding-top:72px}
-    /* Nama mempelai — font custom */
     .names{
       font-family: var(--lux-font);
       font-size: clamp(34px, 9vw, 68px);
@@ -109,7 +107,7 @@
       line-height: 1;
       margin: 6px 0 12px;
     }
-    /* Potret Mempelai — font custom untuk judul */
+    /* Potret Mempelai — font custom */
     #portraits > h2{
       font-family: var(--lux-font);
       font-weight: 400;
@@ -187,7 +185,6 @@
     }
     .portrait-img{ width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block; background:#00000008; }
 
-    /* Nama di bawah bingkai — font custom */
     .portrait-name{
       font-family: var(--lux-font) !important;
       font-weight: 400;
@@ -196,7 +193,6 @@
     }
     .portrait-sub{ font-size:12px; color:#666; }
 
-    /* Footer title — font custom */
     .footer-title{
       font-family: var(--lux-font);
       font-weight: 400;
@@ -242,7 +238,6 @@
 
     /* ======== Timeline Runtutan Acara (tanpa font custom) ======== */
     #rundown > h2{
-      /* pakai default h2 (tidak custom) */
       text-align:center;
       margin-bottom:14px;
     }
@@ -266,16 +261,20 @@
       margin:0 0 14px 0;
       box-shadow:var(--shadow);
     }
+    /* titik harus tepat di garis vertikal (garis di 13px dari sisi kiri container) */
     .timeline li::before{
       content:"";
-      position:absolute; left:-1px; top:18px;
+      position:absolute;
+      /* total diameter titik = 12 + border(2*2) = 16 => set kiri = -13 - 8 = -21 */
+      left:-21px;
+      top:22px;
       width:12px; height:12px; border-radius:999px;
       background: linear-gradient(90deg,var(--accent),var(--accent-2));
       border:2px solid #fff; box-shadow:0 0 0 2px #e9dfcc;
     }
-    .timeline .date{font-weight:800; font-size:14px; letter-spacing:.2px}
-    .timeline .title{font-weight:700; margin-top:6px}
-    .timeline .desc{font-size:13px; color:#555; margin-top:4px; line-height:1.45}
+    .timeline .tl-date{font-weight:800; font-size:14px; letter-spacing:.2px}
+    .timeline .tl-title{font-weight:700; margin-top:6px}
+    .timeline .tl-desc{font-size:13px; color:#555; margin-top:4px; line-height:1.45}
   </style>
 </head>
 <body>
@@ -292,7 +291,6 @@
     whatsapp: "6287789154894",
     coverImage: "cover.jpg",
 
-    /* Galeri aktif lagi */
     gallery: ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"],
 
     youtube: "https://youtu.be/L2I7hZqC7lY?si=yAiNTx3aji-g6nfD",
@@ -306,7 +304,7 @@
       groom: { src: "potret-pria.jpg",   name: "Putu Erik Sudiastika", sub: "Putra pertama dari Pasangan Komang Astini & I Wayan Budiasta" }
     },
 
-    /* === Data Runtutan Acara: cuma 2 item (ubah sesuai kebutuhan) === */
+    /* 2 item sesuai permintaan */
     rundown: [
       {
         date: "30 September 2025",
@@ -320,7 +318,7 @@
       }
     ],
 
-    /* === Data Beri Hadiah === */
+    /* Gift */
     gifts: [
       { bank: "BRI", acc: "901378610220", name: "I Luh Wangi" },
       { bank: "E-Wallet DANA", acc: "xxxxxx", name: "xxxxxx" }
@@ -374,19 +372,19 @@
       </div>
     </section>
 
-    <!-- GALERI (aktif) -->
+    <!-- GALERI -->
     <section class="card reveal" id="sectionGallery">
       <h2>Galeri</h2>
       <div class="gallery" id="gallery"></div>
     </section>
 
-    <!-- RUNTUTAN ACARA (baru, tepat di bawah Galeri) -->
+    <!-- RUNTUTAN ACARA (tanpa font custom, titik sejajar garis) -->
     <section class="card reveal" id="rundown">
       <h2>Runtutan Acara Pawiwahan</h2>
       <ol class="timeline" id="rundownList"></ol>
     </section>
 
-    <!-- WAKTU & TEMPAT (tetap di bawah Galeri + Runtutan) -->
+    <!-- WAKTU & TEMPAT -->
     <section class="reveal">
       <div class="card">
         <h2>Waktu & Tempat</h2>
@@ -483,7 +481,7 @@
     </div>
   </div>
 
-  <!-- LIGHTBOX (untuk Galeri) -->
+  <!-- LIGHTBOX -->
   <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
     <div class="lb-nav">
       <button class="lb-btn" id="lbPrev" aria-label="Sebelumnya">◀</button>
@@ -592,7 +590,7 @@
       });
     })();
 
-    // === Runtutan Acara build (2 item saja sesuai CONFIG.rundown)
+    // === Runtutan Acara build (pakai kelas tl-* agar tidak bentrok font custom) ===
     (function(){
       const data = Array.isArray(CONFIG.rundown) ? CONFIG.rundown : [];
       const list = byId('rundownList');
@@ -601,9 +599,9 @@
       data.forEach(it=>{
         const li = document.createElement('li');
         li.innerHTML = `
-          <div class="date">${escapeHTML(it.date||'')}</div>
-          <div class="title">${escapeHTML(it.title||'')}</div>
-          <div class="desc">${escapeHTML(it.desc||'')}</div>
+          <div class="tl-date">${escapeHTML(it.date||'')}</div>
+          <div class="tl-title">${escapeHTML(it.title||'')}</div>
+          <div class="tl-desc">${escapeHTML(it.desc||'')}</div>
         `;
         list.appendChild(li);
       });
@@ -664,6 +662,32 @@
     giftClose?.addEventListener('click', ()=> giftModal.classList.remove('open'));
     giftModal?.addEventListener('click', (e)=>{ if(e.target===giftModal) giftModal.classList.remove('open'); });
 
+    // Build gift cards from CONFIG
+    (function(){
+      const data = Array.isArray(CONFIG.gifts) ? CONFIG.gifts : [];
+      const wrap = byId('giftCards');
+      if (!wrap || data.length===0) return;
+      wrap.innerHTML = '';
+      data.forEach((it)=>{
+        const div = document.createElement('div');
+        div.className = 'gift-card';
+        const bank = (it.bank||'BANK').toUpperCase();
+        const acc  = String(it.acc||'');
+        const name = it.name||'';
+        div.innerHTML = `
+          <div class="gift-bank">${bank}</div>
+          <div class="gift-acc" data-acc="${acc}">${acc}</div>
+          <div class="gift-name">a.n. ${name}</div>
+          <div class="gift-actions">
+            <button class="copy-btn" data-copy="${acc}">Salin No. Rekening</button>
+            <button class="open-wa" data-wa="${acc}" data-bank="${bank}">Kirim via WA</button>
+          </div>
+          <div class="copy-done" style="display:none">Disalin ✓</div>
+        `;
+        wrap.appendChild(div);
+      });
+    })();
+
     // Copy buttons + open WA
     byId('giftCards')?.addEventListener('click', async (e)=>{
       const btn = e.target.closest('button');
@@ -693,7 +717,7 @@
       tick(); clearInterval(timerId); timerId=setInterval(tick,1000);
     }
 
-    // Lightbox (untuk galeri)
+    // Lightbox (galeri)
     const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg'); let lbIndex=0;
     function openLightbox(i){ lbIndex=i; updateLB(); lb.classList.add('open'); }
     function closeLightbox(){ lb.classList.remove('open'); }
@@ -709,7 +733,7 @@
       if(e.key==='ArrowLeft') document.getElementById('lbPrev').click();
     });
 
-    // Guestbook
+    // Guestbook (local)
     const LS_KEY='guestbook-mepandes'; const list=document.getElementById('guestList'); const entries=JSON.parse(localStorage.getItem(LS_KEY)||'[]');
     function renderGuest(){ list.innerHTML=''; entries.sort((a,b)=>b.t-a.t).forEach(it=>{ const d=document.createElement('div'); d.className='guestbook item'; d.innerHTML=`<div><strong>${escapeHTML(it.n)}</strong></div><div>${escapeHTML(it.p)}</div><div class='meta'>${new Date(it.t).toLocaleString('id-ID')}</div>`; list.appendChild(d); }); }
     renderGuest();
