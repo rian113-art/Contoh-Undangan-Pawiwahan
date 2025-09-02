@@ -50,6 +50,7 @@
     .cover{position:fixed;inset:0;display:grid;place-items:center;background:linear-gradient(180deg, rgba(0,0,0,.45), rgba(0,0,0,.55)), url('cover.jpg') center/cover no-repeat;z-index:50;color:#fff}
     .cover-inner{max-width:680px;text-align:center;padding:24px}
     .chip{display:inline-flex;align-items:center;gap:8px;border:1px solid #ffffff33;padding:6px 12px;border-radius:999px;font-size:14px;background:#ffffff1a;backdrop-filter: blur(6px)}
+    /* Judul cover — font custom */
     .title{
       font-family: var(--lux-font);
       font-size: clamp(46px, 11vw, 96px);
@@ -69,6 +70,7 @@
     @media(min-width:900px){.grid-2{grid-template-columns:1.2fr .8fr}}
 
     header.hero{padding-top:72px}
+    /* Nama mempelai — font custom */
     .names{
       font-family: var(--lux-font);
       font-size: clamp(34px, 9vw, 68px);
@@ -98,8 +100,8 @@
     .map{border-radius:16px;overflow:hidden;border:1px solid #00000018}
     .map iframe{width:100%;height:300px;border:0}
 
-    /* ========= JADWAL / TIMELINE ========= */
-    #sectionSchedule > h2{
+    /* Galeri — font custom + center */
+    #sectionGallery > h2{
       text-align: center;
       font-family: var(--lux-font);
       font-weight: 400;
@@ -107,41 +109,7 @@
       line-height: 1;
       margin: 6px 0 12px;
     }
-    .timeline{ position:relative; display:grid; gap:14px; list-style:none; padding:0; margin:0; }
-    .t-item{ position:relative; padding-left:56px; }
-    .t-item::after{
-      content:"";
-      position:absolute;
-      left:27px;
-      top:28px;
-      bottom:-14px;
-      width:2px;
-      background:#e0b97366;
-    }
-    .t-item:last-child::after{ display:none; }  /* stop di item terakhir */
-    .t-item.t-head::after{ display:none; }      /* pembuka (27) tanpa garis turun */
-
-    .t-dot{
-      position:absolute;
-      left:22px; top:22px;
-      width:12px; height:12px; border-radius:999px;
-      background:var(--accent);
-      border:2px solid var(--accent-2);
-      box-shadow:0 0 0 4px #fff;
-    }
-    .t-box{
-      background:#fff;
-      border:1px solid #00000014;
-      border-radius:14px;
-      box-shadow:var(--shadow);
-      padding:12px;
-    }
-    .t-date{ font-weight:700; font-size:14px; color:#444; }
-    .t-title{ font-weight:700; margin-top:2px; }
-    .t-desc{ font-size:13px; color:#555; margin-top:4px; }
-
-    /* (Sisa style potret, form, sponsor, footer, gift) */
-    /* Potret Mempelai — font custom */
+    /* Potret Mempelai — font custom untuk judul */
     #portraits > h2{
       font-family: var(--lux-font);
       font-weight: 400;
@@ -150,9 +118,61 @@
       margin: 6px 0 12px;
     }
 
-    .portraits .grid-portraits{ display:grid; gap:28px; grid-template-columns:1fr; }
+    /* Gallery grid */
+    .gallery{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+    @media(min-width:720px){.gallery{grid-template-columns:repeat(4,1fr)}}
+    .gallery img{border-radius:14px;aspect-ratio:1/1;object-fit:cover;border:1px solid #00000018;cursor:pointer}
+
+    /* Lightbox */
+    .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);display:none;align-items:center;justify-content:center;z-index:60}
+    .lightbox.open{display:flex}
+    .lightbox img{max-width:92vw;max-height:84vh;border-radius:12px}
+    .lb-nav{position:fixed;inset:0;display:flex;align-items:center;justify-content:space-between;padding:24px;color:#fff}
+    .lb-btn{background:#ffffff1a;border:1px solid #ffffff33;border-radius:12px;padding:10px 14px;cursor:pointer}
+
+    /* Forms */
+    form .field{display:grid;gap:6px;margin:10px 0}
+    input, select, textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #00000022;background:#fff;font-size:14px}
+    button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;padding:12px 16px;border-radius:14px;font-weight:700;cursor:pointer}
+    .notes{font-size:12px;color:#666}
+
+    .guestbook .item{background:#fff;border:1px solid #00000014;border-radius:14px;padding:12px;display:grid;gap:4px}
+    .guestbook .meta{font-size:12px;color:#666}
+
+    /* Floating FABs */
+    .fab-col{position:fixed;right:16px;bottom:16px;display:grid;gap:10px;z-index:40}
+    .fab{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:999px;background:#fff;border:1px solid #00000022;box-shadow:var(--shadow);cursor:pointer}
+
+    /* Reveal on scroll (lembut) */
+    .reveal{opacity:0;transform:translateY(18px) scale(.98);transition:opacity .65s ease, transform .65s cubic-bezier(.22,.8,.24,1)}
+    .reveal.show{opacity:1;transform:none}
+
+    footer{padding:30px 0 60px;text-align:center;color:#666}
+    .badge{display:inline-block;background:#fff;border:1px solid #00000014;border-radius:10px;padding:6px 10px;font-size:12px}
+
+    /* Sponsor (multi, vertikal) */
+    .sponsor{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:10px;color:#666}
+    .sponsor-heading{font-size:12px}
+    .sponsor-logos{
+      display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
+      gap:14px; width:100%; max-width:520px; justify-items:center;
+    }
+    .sponsor-item{display:flex;flex-direction:column;align-items:center;text-align:center}
+    .sponsor-item img{height:34px;width:auto;opacity:.95}
+    .sponsor-item .cap{font-size:11px;color:#888;margin-top:6px}
+
+    /* === Portraits (dua foto – stadium vertikal) === */
+    .portraits .grid-portraits{
+      display:grid;
+      gap:28px;
+      grid-template-columns:1fr;
+    }
     @media(min-width:720px){
-      .portraits .grid-portraits{ grid-template-columns:1fr 1fr; column-gap:40px; row-gap:28px; }
+      .portraits .grid-portraits{
+        grid-template-columns:1fr 1fr;
+        column-gap:40px;
+        row-gap:28px;
+      }
     }
     .portrait-card{ display:grid; justify-items:center; gap:10px; text-align:center; }
     .portrait-frame{
@@ -166,6 +186,8 @@
       box-shadow:var(--shadow);
     }
     .portrait-img{ width:100%; height:100%; object-fit:cover; border-radius:inherit; display:block; background:#00000008; }
+
+    /* Nama di bawah bingkai — font custom */
     .portrait-name{
       font-family: var(--lux-font) !important;
       font-weight: 400;
@@ -174,35 +196,14 @@
     }
     .portrait-sub{ font-size:12px; color:#666; }
 
-    /* Forms */
-    form .field{display:grid;gap:6px;margin:10px 0}
-    input, select, textarea{width:100%;padding:12px 14px;border-radius:12px;border:1px solid #00000022;background:#fff;font-size:14px}
-    button.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;padding:12px 16px;border-radius:14px;font-weight:700;cursor:pointer}
-    .notes{font-size:12px;color:#666}
-    .guestbook .item{background:#fff;border:1px solid #00000014;border-radius:14px;padding:12px;display:grid;gap:4px}
-    .guestbook .meta{font-size:12px;color:#666}
-
-    /* Floating FABs */
-    .fab-col{position:fixed;right:16px;bottom:16px;display:grid;gap:10px;z-index:40}
-    .fab{display:inline-grid;place-items:center;width:54px;height:54px;border-radius:999px;background:#fff;border:1px solid #00000022;box-shadow:var(--shadow);cursor:pointer}
-
-    /* Reveal */
-    .reveal{opacity:0;transform:translateY(18px) scale(.98);transition:opacity .65s ease, transform .65s cubic-bezier(.22,.8,.24,1)}
-    .reveal.show{opacity:1;transform:none}
-
-    footer{padding:30px 0 60px;text-align:center;color:#666}
-    .badge{display:inline-block;background:#fff;border:1px solid #00000014;border-radius:10px;padding:6px 10px;font-size:12px}
-
-    /* Sponsor */
-    .sponsor{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:10px;color:#666}
-    .sponsor-heading{font-size:12px}
-    .sponsor-logos{
-      display:grid; grid-template-columns:repeat(auto-fit, minmax(120px, 1fr));
-      gap:14px; width:100%; max-width:520px; justify-items:center;
+    /* Footer title — font custom */
+    .footer-title{
+      font-family: var(--lux-font);
+      font-weight: 400;
+      font-size: clamp(28px, 8.5vw, 48px);
+      line-height: 1.02;
     }
-    .sponsor-item{display:flex;flex-direction:column;align-items:center;text-align:center}
-    .sponsor-item img{height:34px;width:auto;opacity:.95}
-    .sponsor-item .cap{font-size:11px;color:#888;margin-top:6px}
+    .footer-sub{ font-size:14px; color:#666; }
 
     /* ======== Gift Modal (Beri Hadiah) ======== */
     .gift-wrap{display:flex;justify-content:center}
@@ -211,6 +212,7 @@
       background:#fff;border:1px solid #00000022;border-radius:14px;
       padding:12px 16px;cursor:pointer;box-shadow:var(--shadow);font-weight:700
     }
+
     .gift-modal{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(3px);display:none;align-items:center;justify-content:center;z-index:70}
     .gift-modal.open{display:flex}
     .gift-pane{
@@ -221,17 +223,59 @@
     .gift-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}
     .gift-title{font-weight:800}
     .gift-close{background:#ffffff1a;border:1px solid #00000022;border-radius:12px;padding:8px 10px;cursor:pointer}
+
     .gift-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
-    .gift-card{background:#fff;border:1px solid #00000014;border-radius:16px;padding:14px;position:relative;overflow:hidden}
+    .gift-card{
+      background:#fff;border:1px solid #00000014;border-radius:16px;padding:14px;position:relative;overflow:hidden
+    }
     .gift-card::before{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--accent),var(--accent-2))}
     .gift-bank{font-weight:800;letter-spacing:.5px;margin-bottom:6px}
     .gift-acc{font-size:18px;font-weight:800}
     .gift-name{font-size:12px;color:#666}
     .gift-actions{margin-top:10px;display:flex;gap:8px}
-    .copy-btn,.open-wa{background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer}
+    .copy-btn,.open-wa{
+      background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;color:#fff;
+      padding:10px 12px;border-radius:12px;font-weight:700;cursor:pointer
+    }
     .open-wa{background:#fff;border:1px solid #00000022;color:#333}
     .copy-done{font-size:12px;color:#3a7e3a;margin-left:6px}
-    /* ======== /Gift Modal ======== */
+
+    /* ======== Timeline Runtutan Acara (tanpa font custom) ======== */
+    #rundown > h2{
+      /* pakai default h2 (tidak custom) */
+      text-align:center;
+      margin-bottom:14px;
+    }
+    .timeline{
+      position:relative;
+      list-style:none;
+      margin:0;
+      padding-left:26px; /* ruang untuk garis vertikal */
+    }
+    .timeline::before{
+      content:"";
+      position:absolute; left:13px; top:0; bottom:0;
+      width:2px; background: #e0b97355; /* garis vertikal */
+    }
+    .timeline li{
+      position:relative;
+      background:#fff;
+      border:1px solid #00000014;
+      border-radius:14px;
+      padding:12px 14px;
+      margin:0 0 14px 0;
+      box-shadow:var(--shadow);
+    }
+    .timeline li::before{
+      content:"";
+      position:absolute; left:-1px; top:18px;
+      width:12px; height:12px; border-radius:999px;
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      border:2px solid #fff; box-shadow:0 0 0 2px #e9dfcc;
+    }
+    .timeline .date{font-weight:800; font-size:14px; letter-spacing:.2px}
+    .timeline .title{font-weight:700; margin-top:6px}
+    .timeline .desc{font-size:13px; color:#555; margin-top:4px; line-height:1.45}
   </style>
 </head>
 <body>
@@ -247,7 +291,10 @@
     maps: "https://maps.app.goo.gl/S7hWjjKRmhS3vkGo6",
     whatsapp: "6287789154894",
     coverImage: "cover.jpg",
-    gallery: ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"], /* tak dipakai lagi, aman */
+
+    /* Galeri aktif lagi */
+    gallery: ["foto1.jpg","foto2.jpg","foto3.jpg","foto4.jpg","foto5.jpg"],
+
     youtube: "https://youtu.be/L2I7hZqC7lY?si=yAiNTx3aji-g6nfD",
     sponsorsHeading: "support by:",
     sponsors: [
@@ -258,6 +305,22 @@
       bride: { src: "potret-wanita.jpg", name: "I Luh Wangi",   sub: "Putri pertama dari Pasangan Kadek Budi Asih & I Wayan Puguh" },
       groom: { src: "potret-pria.jpg",   name: "Putu Erik Sudiastika", sub: "Putra pertama dari Pasangan Komang Astini & I Wayan Budiasta" }
     },
+
+    /* === Data Runtutan Acara: cuma 2 item (ubah sesuai kebutuhan) === */
+    rundown: [
+      {
+        date: "30 September 2025",
+        title: "Mewidhi Widana Pawiwahan",
+        desc: "Upacara inti pernikahan adat Bali, dihadiri keluarga, kerabat, dan para undangan."
+      },
+      {
+        date: "1 Oktober 2025",
+        title: "Mekala-kalaan",
+        desc: "Penyucian pengantin setelah pawiwahan sebagai simbol pembersihan dari pengaruh buruk."
+      }
+    ],
+
+    /* === Data Beri Hadiah === */
     gifts: [
       { bank: "BRI", acc: "901378610220", name: "I Luh Wangi" },
       { bank: "E-Wallet DANA", acc: "xxxxxx", name: "xxxxxx" }
@@ -311,63 +374,19 @@
       </div>
     </section>
 
-    <!-- JADWAL URUTAN ACARA (Timeline) -->
-    <section class="card reveal" id="sectionSchedule">
-      <h2>Jadwal Urutan Acara Pawiwahan</h2>
-      <ol class="timeline">
-        <!-- 27 = pembuka (tanpa garis turun) -->
-        <li class="t-item t-head">
-          <span class="t-dot" aria-hidden="true"></span>
-          <div class="t-box">
-            <div class="t-date">27 September 2025</div>
-            <div class="t-title">Mewidhi Widana / Ngerorasin</div>
-            <div class="t-desc">(Upacara persembahyangan mohon restu Ida Sang Hyang Widhi Wasa &amp; leluhur agar pawiwahan berjalan lancar)</div>
-          </div>
-        </li>
-        <li class="t-item">
-          <span class="t-dot" aria-hidden="true"></span>
-          <div class="t-box">
-            <div class="t-date">28 September 2025</div>
-            <div class="t-title">Masegeh Agung / Mecaru</div>
-            <div class="t-desc">(Upacara pembersihan pekarangan rumah, menetralisir hal-hal negatif)</div>
-          </div>
-        </li>
-        <li class="t-item">
-          <span class="t-dot" aria-hidden="true"></span>
-          <div class="t-box">
-            <div class="t-date">29 September 2025</div>
-            <div class="t-title">Ngekeb</div>
-            <div class="t-desc">(Ritual khusus calon pengantin wanita, penyucian diri dan persiapan menuju hari pawiwahan)</div>
-          </div>
-        </li>
-        <li class="t-item">
-          <span class="t-dot" aria-hidden="true"></span>
-          <div class="t-box">
-            <div class="t-date">30 September 2025</div>
-            <div class="t-title">Mewidhi Widana Pawiwahan</div>
-            <div class="t-desc">(Upacara inti pernikahan adat Bali, dihadiri keluarga, kerabat, dan para undangan)</div>
-          </div>
-        </li>
-        <li class="t-item">
-          <span class="t-dot" aria-hidden="true"></span>
-          <div class="t-box">
-            <div class="t-date">1 Oktober 2025</div>
-            <div class="t-title">Mekala-kalaan</div>
-            <div class="t-desc">(Penyucian pengantin setelah pawiwahan, simbol pembersihan dari pengaruh buruk)</div>
-          </div>
-        </li>
-        <li class="t-item">
-          <span class="t-dot" aria-hidden="true"></span>
-          <div class="t-box">
-            <div class="t-date">2 Oktober 2025</div>
-            <div class="t-title">Mesakapan / Mejaya-jaya</div>
-            <div class="t-desc">(Upacara pengesahan dan doa syukur di pura keluarga atau pura desa)</div>
-          </div>
-        </li>
-      </ol>
+    <!-- GALERI (aktif) -->
+    <section class="card reveal" id="sectionGallery">
+      <h2>Galeri</h2>
+      <div class="gallery" id="gallery"></div>
     </section>
 
-    <!-- WAKTU & TEMPAT (di bawah Jadwal) -->
+    <!-- RUNTUTAN ACARA (baru, tepat di bawah Galeri) -->
+    <section class="card reveal" id="rundown">
+      <h2>Runtutan Acara Pawiwahan</h2>
+      <ol class="timeline" id="rundownList"></ol>
+    </section>
+
+    <!-- WAKTU & TEMPAT (tetap di bawah Galeri + Runtutan) -->
     <section class="reveal">
       <div class="card">
         <h2>Waktu & Tempat</h2>
@@ -464,7 +483,7 @@
     </div>
   </div>
 
-  <!-- LIGHTBOX (tetap ada — aman walau galeri dihapus) -->
+  <!-- LIGHTBOX (untuk Galeri) -->
   <div class="lightbox" id="lightbox" aria-modal="true" role="dialog">
     <div class="lb-nav">
       <button class="lb-btn" id="lbPrev" aria-label="Sebelumnya">◀</button>
@@ -559,36 +578,38 @@
     mapLink.href = mapUrl || ("https://www.google.com/maps?q="+encodeURIComponent(CONFIG.place));
     mapLink.textContent = CONFIG.place + ' — Lihat di Maps';
 
-    /* (Galeri dihapus) — tidak ada JS galeri */
-
-    // ===== Gift modal build =====
+    // === Galeri build
     (function(){
-      const data = Array.isArray(CONFIG.gifts) ? CONFIG.gifts : [];
-      const wrap = byId('giftCards');
-      if (!wrap || data.length===0) return;
-
-      wrap.innerHTML = '';
-      data.forEach((it)=>{
-        const div = document.createElement('div');
-        div.className = 'gift-card';
-        const bank = (it.bank||'BANK').toUpperCase();
-        const acc  = String(it.acc||'');
-        const name = it.name||'';
-        div.innerHTML = `
-          <div class="gift-bank">${bank}</div>
-          <div class="gift-acc" data-acc="${acc}">${acc}</div>
-          <div class="gift-name">a.n. ${name}</div>
-          <div class="gift-actions">
-            <button class="copy-btn" data-copy="${acc}">Salin No. Rekening</button>
-            <button class="open-wa" data-wa="${acc}" data-bank="${bank}">Kirim via WA</button>
-          </div>
-          <div class="copy-done" style="display:none">Disalin ✓</div>
-        `;
-        wrap.appendChild(div);
+      const g = byId('gallery');
+      const arr = Array.isArray(CONFIG.gallery) ? CONFIG.gallery : [];
+      if(!g || arr.length === 0){ return; }
+      g.innerHTML = '';
+      arr.forEach((src,i)=>{
+        const img=document.createElement('img');
+        img.src=src; img.alt='Galeri '+(i+1); img.loading='lazy';
+        img.addEventListener('click',()=>openLightbox(i));
+        g.appendChild(img);
       });
     })();
 
-    // ===== Scroll reveal =====
+    // === Runtutan Acara build (2 item saja sesuai CONFIG.rundown)
+    (function(){
+      const data = Array.isArray(CONFIG.rundown) ? CONFIG.rundown : [];
+      const list = byId('rundownList');
+      if(!list || data.length===0) return;
+      list.innerHTML = '';
+      data.forEach(it=>{
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div class="date">${escapeHTML(it.date||'')}</div>
+          <div class="title">${escapeHTML(it.title||'')}</div>
+          <div class="desc">${escapeHTML(it.desc||'')}</div>
+        `;
+        list.appendChild(li);
+      });
+    })();
+
+    /* ===== Scroll reveal ===== */
     function setupScrollReveal(){
       const io = new IntersectionObserver((entries)=>{
         entries.forEach(e=>{
@@ -672,26 +693,20 @@
       tick(); clearInterval(timerId); timerId=setInterval(tick,1000);
     }
 
-    // Lightbox (aman walau tidak dipakai)
+    // Lightbox (untuk galeri)
     const lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg'); let lbIndex=0;
-    function openLightbox(i){ lbIndex=i; updateLB(); lb.classList.add('open'); } function closeLightbox(){ lb.classList.remove('open'); }
-    function updateLB(){ if(Array.isArray(CONFIG.gallery)) lbImg.src=CONFIG.gallery[lbIndex]; }
-    document.getElementById('lbPrev')?.addEventListener('click', ()=>{ lbIndex=(lbIndex-1+(CONFIG.gallery?.length||1))%(CONFIG.gallery?.length||1); updateLB(); });
-    document.getElementById('lbNext')?.addEventListener('click', ()=>{ lbIndex=(lbIndex+1)%(CONFIG.gallery?.length||1); updateLB(); });
-    document.getElementById('lbClose')?.addEventListener('click', closeLightbox);
-    lb?.addEventListener('click', e=>{ if(e.target===lb) closeLightbox(); });
-    window.addEventListener('keydown', e=>{ if(!lb?.classList.contains('open')) return; if(e.key==='Escape') closeLightbox(); if(e.key==='ArrowRight') document.getElementById('lbNext').click(); if(e.key==='ArrowLeft') document.getElementById('lbPrev').click(); });
-
-    // RSVP -> WA
-    document.getElementById('rsvp').addEventListener('submit', e=>{
-      e.preventDefault(); const f=new FormData(e.target);
-      const msg=`Halo, saya *${f.get('name')}*
-Status: ${f.get('status')}
-Jumlah: ${f.get('count')} orang
-Ucapan: ${f.get('msg')||'-'}
-
-Untuk acara Pawiwahan: ${CONFIG.bride} & ${CONFIG.groom} pada ${CONFIG.dateText} di ${CONFIG.place}.`;
-      window.open(`https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(msg)}`,'_blank');
+    function openLightbox(i){ lbIndex=i; updateLB(); lb.classList.add('open'); }
+    function closeLightbox(){ lb.classList.remove('open'); }
+    function updateLB(){ lbImg.src=CONFIG.gallery[lbIndex]; }
+    document.getElementById('lbPrev').onclick=()=>{ lbIndex=(lbIndex-1+CONFIG.gallery.length)%CONFIG.gallery.length; updateLB(); };
+    document.getElementById('lbNext').onclick=()=>{ lbIndex=(lbIndex+1)%CONFIG.gallery.length; updateLB(); };
+    document.getElementById('lbClose').onclick=closeLightbox;
+    lb.addEventListener('click', e=>{ if(e.target===lb) closeLightbox(); });
+    window.addEventListener('keydown', e=>{
+      if(!lb.classList.contains('open')) return;
+      if(e.key==='Escape') closeLightbox();
+      if(e.key==='ArrowRight') document.getElementById('lbNext').click();
+      if(e.key==='ArrowLeft') document.getElementById('lbPrev').click();
     });
 
     // Guestbook
@@ -730,7 +745,7 @@ END:VCALENDAR`;
       const blob=new Blob([ics],{type:'text/calendar'}); const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='undangan.ics'; a.click(); URL.revokeObjectURL(a.href);
     });
     function toICSDate(d){ const pad=n=>String(n).padStart(2,'0'); return d.getUTCFullYear()+pad(d.getUTCMonth()+1)+pad(d.getUTCDate())+'T'+pad(d.getUTCHours())+pad(d.getUTCMinutes())+pad(d.getUTCSeconds())+'Z'; }
-    function escapeICS(s){ return s.replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n'); }
+    function escapeICS(s){ return String(s||'').replace(/\\/g,'\\\\').replace(/;/g,'\\;').replace(/,/g,'\\,').replace(/\n/g,'\\n'); }
   </script>
 
   <script src="https://www.youtube.com/iframe_api"></script>
